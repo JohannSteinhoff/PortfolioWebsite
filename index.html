@@ -144,6 +144,8 @@
   .work .thumb.live .badge{ font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:.18em; color:var(--green); border:1px solid rgba(90,238,108,.4); border-radius:6px; padding:6px 12px; position:relative; z-index:1; transition:.22s; }
   .work .card:hover .thumb.live .badge{ background:rgba(90,238,108,.08); transform:scale(1.04); }
   .work .thumb.live .url{ position:absolute; bottom:12px; font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--muted); }
+  .work .thumb.shot img{ filter:grayscale(1); }
+  .work .card:hover .thumb.shot img{ filter:grayscale(0); transform:scale(1.03); }
 
   .stack{ display:grid; grid-template-columns:repeat(6,1fr); gap:14px; }
   .chip{ position:relative; background:#1d1d1d; border:1px solid var(--border); border-radius:14px; padding:20px 12px; display:flex; flex-direction:column; align-items:center; gap:11px; transition:.18s; text-align:center; }
@@ -398,7 +400,7 @@
           <a class="card" href="#/work/machine-learning" data-slug="machine-learning"><div class="thumb"><img class="bw" src="https://framerusercontent.com/images/d5H03qwxB7Pcybcnpl0HTHHktIg.png" alt="Predicting Texas Agricultural Production" loading="lazy"><img class="color" src="images/machine-learning-color.png?v=1" alt="" loading="lazy" onerror="this.remove()"></div><div class="meta"><h3>Predicting Texas Agricultural Production Using Climate Data</h3><span class="arrow">↗</span></div></a>
           <a class="card" href="#/work/arithmetic-logic-unit" data-slug="arithmetic-logic-unit"><div class="thumb"><img class="bw" src="https://framerusercontent.com/images/BM9pb8VQBASoo2z7B4mPNIOQxjE.png" alt="Arithmetic Logic Unit" loading="lazy"><img class="color" src="images/arithmetic-logic-unit-color.png?v=1" alt="" loading="lazy" onerror="this.remove()"></div><div class="meta"><h3>Arithmetic Logic Unit</h3><span class="arrow">↗</span></div></a>
           <a class="card" href="#/work/object-oriented-chess" data-slug="object-oriented-chess"><div class="thumb"><img class="bw" src="https://framerusercontent.com/images/Qoz2cSSqkFk4Mu0XoUijCsDH10.png" alt="Object Oriented Chess" loading="lazy"><img class="color" src="images/object-oriented-chess-color.png?v=1" alt="" loading="lazy" onerror="this.remove()"></div><div class="meta"><h3>Object Oriented Chess</h3><span class="arrow">↗</span></div></a>
-          <a class="card" href="https://gettender.web.app/" target="_blank" rel="noopener"><div class="thumb live"><span class="badge">● LIVE</span><span class="url">gettender.web.app</span></div><div class="meta"><h3>Tender</h3><span class="arrow">↗</span></div></a>
+          <a class="card" href="https://gettender.web.app/" target="_blank" rel="noopener"><div class="thumb shot"><img src="images/tender.png?v=1" alt="Tender app" loading="lazy"></div><div class="meta"><h3>Tender</h3><span class="arrow">↗</span></div></a>
           <a class="card" href="https://johannsteinhoff.github.io/JohannWebsitesforhire/" target="_blank" rel="noopener"><div class="thumb live"><span class="badge">● LIVE</span><span class="url">websites for hire</span></div><div class="meta"><h3>Websites for Hire</h3><span class="arrow">↗</span></div></a>
         </div>
       </div>
