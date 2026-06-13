@@ -132,9 +132,12 @@
   .work{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }
   .work .card{ display:block; background:#1d1d1d; border:1px solid var(--border); border-radius:12px; overflow:hidden; transition:.22s; cursor:pointer; }
   .work .card:hover{ transform:translateY(-4px); border-color:var(--green); }
-  .work .thumb{ aspect-ratio:16/10; overflow:hidden; background:#161616; }
-  .work .thumb img{ width:100%; height:100%; object-fit:cover; filter:grayscale(1); transition:filter .45s ease, transform .45s ease; }
-  .work .card:hover .thumb img{ filter:grayscale(0); transform:scale(1.04); }
+  .work .thumb{ position:relative; aspect-ratio:16/10; overflow:hidden; background:#161616; }
+  .work .thumb img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:opacity .45s ease, transform .45s ease; }
+  .work .thumb .bw{ opacity:1; }                  /* black & white (default) */
+  .work .thumb .color{ opacity:0; }               /* red-accent (on hover)   */
+  .work .card:hover .thumb .bw{ opacity:0; }
+  .work .card:hover .thumb .color{ opacity:1; transform:scale(1.03); }
   .work .meta{ padding:16px 18px; display:flex; justify-content:space-between; align-items:center; gap:12px; }
   .work .meta h3{ font-family:'Geist'; font-size:17px; } .work .arrow{ color:var(--green); }
 
@@ -387,10 +390,10 @@
     <section id="work">
       <div class="line reveal">
         <div class="work">
-          <a class="card" href="#/work/offensive-security-simulation" data-slug="offensive-security-simulation"><div class="thumb"><img src="https://framerusercontent.com/images/3NazvpHiEMrxBVnHOrCkTmn36WE.png" alt="Offensive Security Simulation" loading="lazy"></div><div class="meta"><h3>Offensive Security Simulation</h3><span class="arrow">↗</span></div></a>
-          <a class="card" href="#/work/machine-learning" data-slug="machine-learning"><div class="thumb"><img src="https://framerusercontent.com/images/d5H03qwxB7Pcybcnpl0HTHHktIg.png" alt="Predicting Texas Agricultural Production" loading="lazy"></div><div class="meta"><h3>Predicting Texas Agricultural Production Using Climate Data</h3><span class="arrow">↗</span></div></a>
-          <a class="card" href="#/work/arithmetic-logic-unit" data-slug="arithmetic-logic-unit"><div class="thumb"><img src="https://framerusercontent.com/images/BM9pb8VQBASoo2z7B4mPNIOQxjE.png" alt="Arithmetic Logic Unit" loading="lazy"></div><div class="meta"><h3>Arithmetic Logic Unit</h3><span class="arrow">↗</span></div></a>
-          <a class="card" href="#/work/object-oriented-chess" data-slug="object-oriented-chess"><div class="thumb"><img src="https://framerusercontent.com/images/Qoz2cSSqkFk4Mu0XoUijCsDH10.png" alt="Object Oriented Chess" loading="lazy"></div><div class="meta"><h3>Object Oriented Chess</h3><span class="arrow">↗</span></div></a>
+          <a class="card" href="#/work/offensive-security-simulation" data-slug="offensive-security-simulation"><div class="thumb"><img class="bw" src="https://framerusercontent.com/images/3NazvpHiEMrxBVnHOrCkTmn36WE.png" alt="Offensive Security Simulation" loading="lazy"><img class="color" src="images/offensive-security-simulation-color.png" alt="" loading="lazy" onerror="this.remove()"></div><div class="meta"><h3>Offensive Security Simulation</h3><span class="arrow">↗</span></div></a>
+          <a class="card" href="#/work/machine-learning" data-slug="machine-learning"><div class="thumb"><img class="bw" src="https://framerusercontent.com/images/d5H03qwxB7Pcybcnpl0HTHHktIg.png" alt="Predicting Texas Agricultural Production" loading="lazy"><img class="color" src="images/machine-learning-color.png" alt="" loading="lazy" onerror="this.remove()"></div><div class="meta"><h3>Predicting Texas Agricultural Production Using Climate Data</h3><span class="arrow">↗</span></div></a>
+          <a class="card" href="#/work/arithmetic-logic-unit" data-slug="arithmetic-logic-unit"><div class="thumb"><img class="bw" src="https://framerusercontent.com/images/BM9pb8VQBASoo2z7B4mPNIOQxjE.png" alt="Arithmetic Logic Unit" loading="lazy"><img class="color" src="images/arithmetic-logic-unit-color.png" alt="" loading="lazy" onerror="this.remove()"></div><div class="meta"><h3>Arithmetic Logic Unit</h3><span class="arrow">↗</span></div></a>
+          <a class="card" href="#/work/object-oriented-chess" data-slug="object-oriented-chess"><div class="thumb"><img class="bw" src="https://framerusercontent.com/images/Qoz2cSSqkFk4Mu0XoUijCsDH10.png" alt="Object Oriented Chess" loading="lazy"><img class="color" src="images/object-oriented-chess-color.png" alt="" loading="lazy" onerror="this.remove()"></div><div class="meta"><h3>Object Oriented Chess</h3><span class="arrow">↗</span></div></a>
         </div>
       </div>
     </section>
@@ -647,7 +650,7 @@ function IMG(id){return 'https://framerusercontent.com/images/'+id;}
 var PROJECTS={
  'offensive-security-simulation':{
    title:'Offensive Security Simulation',
-   cover:'3NazvpHiEMrxBVnHOrCkTmn36WE.png',
+   cover:'TjG9IXYo6etTapEXTAaKRSkgQs.png',
    client:'Dr. Randall S Klepetko — System Security',
    role:'Remote Payload Deployment and Execution on Windows XP using reverse TCP.',
    year:'2025',
@@ -663,12 +666,12 @@ var PROJECTS={
      '<b>Comprehensive Documentation</b> — Detailed step-by-step guides with screenshots for educational replication',
      '<b>Multi-Vector Analysis</b> — Coverage of network, social engineering, and physical attack surfaces'
    ],
-   gallery:['TjG9IXYo6etTapEXTAaKRSkgQs.png','u7COZpEwal9CMYRQ67j7478QA.png','byXi0EOACbyfRSMbtB9kyymBIco.png','C9bb6FhpzaypIaMVYJaP9hsLZ4A.png'],
+   gallery:['u7COZpEwal9CMYRQ67j7478QA.png','byXi0EOACbyfRSMbtB9kyymBIco.png','C9bb6FhpzaypIaMVYJaP9hsLZ4A.png'],
    results:[{v:'3',l:'Attack vectors demonstrated by team Computer Insecurity'},{v:'100%',l:'Persistent access via startup-folder payload placement'},{v:'<5s',l:'ESP32 keylogger injection time when plugged into USB'},{v:'2-stage',l:'Phishing attack (email + fake LinkedIn page)'}]
  },
  'machine-learning':{
    title:'Predicting Texas Agricultural Production Using Climate Data',
-   cover:'d5H03qwxB7Pcybcnpl0HTHHktIg.png',
+   cover:'khNgmgqxpZC5ZkhHPiLdhBZ9lk.jpg',
    client:'Prof. Dr. Jelena Tešić (CS4347)',
    role:'Baseline model, evaluation, hyperparameter tuning',
    year:'2025',
@@ -688,12 +691,12 @@ var PROJECTS={
      'Drought focused analysis showing climate signals are strongest during high risk years',
      'Feature importance analysis showing <b>temperature is 2.7× more influential than precipitation</b>'
    ],
-   gallery:['khNgmgqxpZC5ZkhHPiLdhBZ9lk.jpg','ELj9ueDr1kbAgbuH4AHSsYQE4Ug.png','LaryuxGzOBfDL5gMlHQq9L8EQ.png','i6rSeBTHztAFpgek3l4mjZHZ3eo.png'],
+   gallery:['ELj9ueDr1kbAgbuH4AHSsYQE4Ug.png','LaryuxGzOBfDL5gMlHQq9L8EQ.png','i6rSeBTHztAFpgek3l4mjZHZ3eo.png'],
    results:[{v:'398,000+',l:'USDA records analyzed'},{v:'254',l:'Texas counties analyzed'},{v:'2.7×',l:'Temperature vs precipitation influence'},{v:'0.667',l:'Corn yield model R²'}]
  },
  'arithmetic-logic-unit':{
    title:'Arithmetic Logic Unit',
-   cover:'BM9pb8VQBASoo2z7B4mPNIOQxjE.png',
+   cover:'BFSkR2pFx0eRCbmmyD8AxtBGZLY.png',
    client:'Dr. Randall S Klepetko — Computer Architecture',
    role:'Program, Test, and Document A Virtual Arithmetic Logic Unit',
    year:'2024',
@@ -713,12 +716,12 @@ var PROJECTS={
      'Comprehensive Verilog testbench with automated waveform generation',
      'Simulation and debugging performed using <b>GTKWave</b>'
    ],
-   gallery:['BFSkR2pFx0eRCbmmyD8AxtBGZLY.png','aizvA4arj7D6odSJY7e1XdEJAZU.png','1UnUy0GRMWem52993R4tFA8EiE.jpg','jxt8GVDG7Uz4zN1EhWfIRCLOyg.png'],
+   gallery:['aizvA4arj7D6odSJY7e1XdEJAZU.png','1UnUy0GRMWem52993R4tFA8EiE.jpg','jxt8GVDG7Uz4zN1EhWfIRCLOyg.png'],
    results:[{v:'13',l:'Operations implemented'},{v:'100%',l:'Opcode coverage tested'},{v:'4-bit',l:'ALU data width'},{v:'8-bit',l:'Max internal result width'}]
  },
  'object-oriented-chess':{
    title:'Object Oriented Chess',
-   cover:'Qoz2cSSqkFk4Mu0XoUijCsDH10.png',
+   cover:'THpC4rF2TpQrDDCvXAd5WWUT34.png',
    client:'Doctor Xiaomin Li (CS 3354-003)',
    role:'Engineer Object Oriented Chess Game',
    year:'2024',
@@ -730,7 +733,7 @@ var PROJECTS={
    features:[
      'Legal-move validation','Capture logic','Check / checkmate detection','Turn-based two-player flow','Responsive 8×8 GUI with mouse interaction'
    ],
-   gallery:['THpC4rF2TpQrDDCvXAd5WWUT34.png','JFjLL5a1gB8MmiKBRMfBI2HnmXo.png','MOyGuCIE1eHffvxP3kidupaFU4.png'],
+   gallery:['JFjLL5a1gB8MmiKBRMfBI2HnmXo.png','MOyGuCIE1eHffvxP3kidupaFU4.png'],
    results:[{v:'64',l:'Board-state tiles scanned per turn to validate moves'},{v:'6',l:'Unique piece classes (Pawn, Rook, Knight, Bishop, Queen, King)'},{v:'32',l:'Piece objects instantiated at game start (16 + 16)'},{v:'1,000+',l:'Legal-move calculations per match'}]
  }
 };
