@@ -102,6 +102,12 @@
   .sec-title{ font-family:'Geist'; font-size:clamp(26px,3.6vw,38px); font-weight:600; }
   .sec-title .em{ font-style:italic; color:var(--muted); font-weight:400; }
   .big-year{ font-family:var(--mono); color:var(--green); font-size:clamp(34px,7vw,76px); font-weight:600; line-height:1; }
+  .grad-banner{ display:flex; align-items:center; gap:20px; flex-wrap:wrap; }
+  .grad-banner .big-year{ position:relative; padding-left:18px; }
+  .grad-banner .big-year::before{ content:""; position:absolute; left:0; top:6%; bottom:6%; width:4px; border-radius:2px; background:var(--green); }
+  .grad-meta{ display:flex; flex-direction:column; gap:3px; }
+  .grad-meta .label{ font-family:var(--mono); font-size:11px; letter-spacing:.28em; text-transform:uppercase; color:var(--green); }
+  .grad-meta .title{ font-family:'Geist'; font-weight:600; font-size:clamp(17px,2.2vw,24px); color:var(--text); }
 
   .acad{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
   .acad .col{ background:#1d1d1d; border:1px solid var(--border); border-radius:10px; padding:20px; }
@@ -305,7 +311,7 @@
             <div class="hero-grid">
               <div>
                 <h1>Johann Steinhoff</h1>
-                <div class="role">Computer Science Student</div>
+                <div class="role">Computer Science Graduate</div>
                 <p class="lead">I'm excited to be a human who will help the world using technology.</p>
                 <div class="btn-row">
                   <a class="btn primary" href="https://drive.google.com/file/d/1xyUFAcntqcEYi382X8YwD-rgUcbnxQRZ/view?usp=sharing" target="_blank" rel="noopener">Download CV ↓</a>
@@ -328,19 +334,25 @@
 
     <div class="line blank"></div>
     <div class="line"><span class="cmt">&lt;!-- Hero section --&gt;</span></div>
-    <div class="line reveal"><span class="kw">const</span> <span class="str">role</span> = <span class="str">"TXST Computer Science Student"</span>;</div>
+    <div class="line reveal"><span class="kw">const</span> <span class="str">role</span> = <span class="str">"TXST Computer Science Graduate"</span>;</div>
     <div class="line reveal mut indent">Computer Science Bachelors at Texas State, with a minor in communications and mathematics. Interested in how things work.</div>
 
     <div class="line blank"></div>
     <div class="line"><span class="cmt">&lt;!-- Academic Experience --&gt;</span></div>
     <section id="academic">
-      <div class="line reveal"><span class="mut">// Class of</span> <span class="big-year" style="vertical-align:middle">2026</span></div>
+      <div class="line reveal grad-banner">
+        <span class="big-year">2026</span>
+        <span class="grad-meta">
+          <span class="label">Class of</span>
+          <span class="title">Computer Science Graduate · Texas State</span>
+        </span>
+      </div>
       <div class="line reveal">
         <div class="acad">
           <div class="col">
-            <h3><span class="n">1.</span> Computer Science <span class="mut" style="font-weight:400">(In Progress)</span></h3>
+            <h3><span class="n">1.</span> Computer Science <span class="mut" style="font-weight:400">(Completed)</span></h3>
             <div class="sub">College of Science and Engineering</div>
-            <ul><li>Computer Systems Security</li><li>Object Oriented Design &amp; Programming</li><li>Artificial Intelligence (before May 2026)</li><li>Computer Architecture</li><li>Data Structures and Algorithms</li></ul>
+            <ul><li>Computer Systems Security</li><li>Object Oriented Design &amp; Programming</li><li>Artificial Intelligence</li><li>Computer Architecture</li><li>Data Structures and Algorithms</li></ul>
           </div>
           <div class="col">
             <h3><span class="n">2.</span> Mathematics and Communication</h3>
@@ -393,8 +405,8 @@
 
     <div class="line blank"></div>
     <div class="line"><span class="cmt">&lt;!-- Featured work --&gt;</span></div>
-    <div class="line reveal"><span class="sec-title">Work &amp; <span class="em">projects</span></span></div>
     <section id="work">
+      <div class="line reveal"><span class="sec-title">Work &amp; <span class="em">projects</span></span></div>
       <div class="line reveal">
         <div class="work">
           <a class="card" href="https://gettender.web.app/" target="_blank" rel="noopener"><div class="thumb shot"><img src="images/tender.png?v=1" alt="Tender app" loading="lazy"></div><div class="meta"><h3>Tender</h3><span class="arrow">↗</span></div></a>
@@ -430,8 +442,8 @@
 
     <div class="line blank"></div>
     <div class="line"><span class="cmt">&lt;!-- Insights &amp; Ideas --&gt;</span></div>
-    <div class="line reveal"><span class="sec-title">From My <span class="em">Desk</span></span></div>
     <section id="blog">
+      <div class="line reveal"><span class="sec-title">From My <span class="em">Desk</span></span></div>
       <div class="line reveal">
         <div class="blog">
           <div class="thumb"><img src="https://framerusercontent.com/images/x9jMlxBxkY2hH8OQ0eqsgREzl68.png" alt="FPV Drones" loading="lazy"></div>
@@ -621,8 +633,8 @@ function newPrompt(){
 }
 var TERM={
   help:function(){return 'Available commands:\n  <span class="bl">about</span>      who is Johann\n  <span class="bl">whoami</span>     short bio\n  <span class="bl">ls</span>         list sections\n  <span class="bl">skills</span>     tech stack\n  <span class="bl">projects</span>   featured work\n  <span class="bl">academic</span>   coursework\n  <span class="bl">contact</span>    get in touch\n  <span class="bl">cv</span>         open resume\n  <span class="bl">social</span>     links\n  <span class="bl">goto</span> &lt;x&gt;   jump to a section\n  <span class="bl">date</span>       current time (CT)\n  <span class="bl">clear</span>      clear the screen';},
-  about:function(){return 'Johann Steinhoff — Computer Science student at Texas State (Class of 2026),\nminoring in Communications & Mathematics. Builds clean interfaces, robust\nsystems and creative solutions. <span class="or">Open to new work.</span>';},
-  whoami:function(){return 'johann — CS student · San Marcos, TX · English/German · Python &amp; Java certified';},
+  about:function(){return 'Johann Steinhoff — Computer Science graduate from Texas State (Class of 2026),\nminoring in Communications & Mathematics. Builds clean interfaces, robust\nsystems and creative solutions. <span class="or">Open to new work.</span>';},
+  whoami:function(){return 'johann — CS graduate · San Marcos, TX · English/German · Python &amp; Java certified';},
   ls:function(){return 'hero/   academic/   about/   timeline/   projects/   tech-stack/   blog/   contact/';},
   skills:function(){return 'Python(cert)  Java(cert)  C  Visual C++  Arduino  Jupyter  Git\nAdobe Suite  Google Suite  Microsoft Suite  Framer  FL Studio';},
   projects:function(){return '1. Offensive Security Simulation\n2. Predicting Texas Agricultural Production Using Climate Data\n3. Arithmetic Logic Unit\n4. Object Oriented Chess';},
@@ -649,7 +661,7 @@ document.querySelectorAll('[data-cmd]').forEach(function(el){
 document.addEventListener('keydown',function(e){
   if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){e.preventDefault();palBack.classList.contains('open')?closePal():openPal();return;}
   if(e.key==='`'&&!/INPUT|TEXTAREA/.test(document.activeElement.tagName)){e.preventDefault();toggleTerm();return;}
-  if(e.key==='Escape'){closePal();}
+  if(e.key==='Escape'){closePal();closeTerm();}
 });
 
 /* ============================================================
