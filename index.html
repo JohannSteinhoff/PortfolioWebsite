@@ -11,505 +11,553 @@
 <meta property="og:image" content="https://framerusercontent.com/assets/qp9TVhUWU1MVJTmRai3N65nIgCA.jpeg">
 <link rel="icon" href="https://framerusercontent.com/images/f7B1ryJWKG1LEkHlCQbaiClSeUI.jpeg">
 
-<!-- Fonts: Geist (sans) + IBM Plex Mono (mono). Loaded from Google Fonts, independent of Framer. -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-  /* ============================================================
-     DESIGN TOKENS  (taken from the original Framer site)
-     ============================================================ */
+  /* ===========================================================
+     IDE / CODE-EDITOR THEME  (palette pulled from the original)
+     =========================================================== */
   :root{
-    --bg:        #1f1f1f;   /* page background          */
-    --surface:   #262626;   /* cards / panels           */
-    --surface-2: #2e2e2e;   /* raised elements          */
-    --border:    #383838;   /* hairline borders         */
-    --text:      #f2f2f2;   /* primary text             */
-    --muted:     #9a9a9a;   /* secondary text           */
-    --accent:    #5aee6c;   /* signature green          */
-    --accent-2:  #ff8000;   /* orange accent            */
-    --radius:    22px;
-    --maxw:      1180px;
+    --bg:        #1f1f1f;   /* editor background    */
+    --panel:     #181818;   /* title/tab/status bar */
+    --panel-2:   #202020;   /* sidebar              */
+    --card:      #262626;   /* "viewer" panels      */
+    --border:    #333333;
+    --gutter:    #5c5c5c;   /* line numbers         */
+    --text:      #e8e8e8;
+    --muted:     #9d9d9d;   /* rgb(157,157,157)     */
+    --comment:   #6a9955;   /* code comments        */
+    --green:     #5aee6c;   /* strings / accent     */
+    --blue:      #4fb0ff;   /* keywords / links     */
+    --orange:    #ff8000;   /* numbers / constants  */
+    --tab-h:     40px;
+    --title-h:   38px;
+    --status-h:  26px;
     --mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
-    --sans: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   }
 
   *{ box-sizing:border-box; margin:0; padding:0; }
   html{ scroll-behavior:smooth; }
   body{
-    background:var(--bg);
-    color:var(--text);
-    font-family:var(--sans);
-    line-height:1.55;
-    -webkit-font-smoothing:antialiased;
-    overflow-x:hidden;
+    background:var(--bg); color:var(--text);
+    font-family:var(--mono); font-size:14px; line-height:1.6;
+    -webkit-font-smoothing:antialiased; padding-bottom:var(--status-h);
   }
   a{ color:inherit; text-decoration:none; }
   img{ display:block; max-width:100%; }
-  section{ scroll-margin-top:90px; }
+  ::selection{ background:rgba(90,238,108,.25); }
+  section{ scroll-margin-top:calc(var(--title-h) + var(--tab-h) + 14px); }
 
-  .wrap{ width:100%; max-width:var(--maxw); margin:0 auto; padding:0 24px; }
-  .mono{ font-family:var(--mono); }
-  .accent{ color:var(--accent); }
+  /* syntax helpers */
+  .cmt{ color:var(--comment); }
+  .kw{ color:var(--blue); }
+  .str{ color:var(--green); }
+  .num{ color:var(--orange); }
+  .mut{ color:var(--muted); }
+  .punct{ color:#6f6f6f; }
 
-  /* ---------- Header / Nav ---------- */
-  header.nav{
-    position:sticky; top:0; z-index:50;
-    backdrop-filter:blur(14px);
-    background:rgba(31,31,31,.72);
-    border-bottom:1px solid var(--border);
+  /* ---------- Title bar (window chrome) ---------- */
+  .titlebar{
+    position:sticky; top:0; z-index:60; height:var(--title-h);
+    background:var(--panel); border-bottom:1px solid var(--border);
+    display:flex; align-items:center; padding:0 14px; gap:14px;
   }
-  .nav-inner{
-    display:flex; align-items:center; gap:18px;
-    height:68px;
-  }
-  .brand{ display:flex; align-items:center; gap:12px; font-weight:600; }
-  .brand img{ width:34px; height:34px; border-radius:50%; object-fit:cover; }
-  .nav-links{ display:flex; gap:6px; margin-left:8px; }
-  .nav-links a{
-    font-family:var(--mono); font-size:13px; color:var(--muted);
-    padding:8px 12px; border-radius:10px; transition:.2s;
-  }
-  .nav-links a:hover{ color:var(--text); background:var(--surface); }
-  .nav-status{ margin-left:auto; display:flex; align-items:center; gap:18px; }
-  .pill{
-    display:inline-flex; align-items:center; gap:8px;
-    font-family:var(--mono); font-size:12px; color:var(--text);
-    background:rgba(90,238,108,.10);
-    border:1px solid rgba(90,238,108,.30);
-    padding:7px 12px; border-radius:999px;
-  }
-  .dot{ width:8px; height:8px; border-radius:50%; background:var(--accent); box-shadow:0 0 10px var(--accent); }
-  .loc{ font-family:var(--mono); font-size:12px; color:var(--muted); display:flex; align-items:center; gap:6px; }
-  .clock{ font-family:var(--mono); font-size:12px; color:var(--muted); }
-  .clock b{ color:var(--text); font-weight:500; }
+  .lights{ display:flex; gap:8px; }
+  .lights i{ width:12px; height:12px; border-radius:50%; display:block; }
+  .lights .r{ background:#ff5f57; } .lights .y{ background:#febc2e; } .lights .g{ background:#28c840; }
+  .title{ flex:1; text-align:center; color:var(--muted); font-size:12.5px; letter-spacing:.02em; }
+  .title b{ color:var(--text); font-weight:500; }
+  .title .accent{ color:var(--green); }
+  .win-actions{ display:flex; gap:16px; color:var(--muted); font-size:12px; }
+  .win-actions a:hover{ color:var(--green); }
 
-  /* ---------- Hero ---------- */
-  .hero{ padding:74px 0 30px; }
-  .welcome{ font-family:var(--mono); color:var(--accent); font-size:14px; margin-bottom:22px; }
-  .hero-card{
-    display:grid; grid-template-columns:1.2fr .8fr; gap:34px;
-    background:var(--surface);
-    border:1px solid var(--border);
-    border-radius:var(--radius);
-    padding:40px;
+  /* ---------- Tab bar ---------- */
+  .tabs{
+    position:sticky; top:var(--title-h); z-index:55; height:var(--tab-h);
+    background:var(--panel); border-bottom:1px solid var(--border);
+    display:flex; align-items:stretch; overflow-x:auto; scrollbar-width:none;
   }
-  .hero h1{ font-size:clamp(30px,4vw,46px); font-weight:600; letter-spacing:-.02em; }
-  .hero .role{ font-family:var(--mono); color:var(--accent); margin:6px 0 18px; font-size:15px; }
-  .hero p.lead{ color:var(--muted); font-size:18px; max-width:34ch; }
-  .facts{ display:grid; gap:14px; align-content:start; }
-  .fact{ display:flex; gap:12px; align-items:flex-start; font-size:14px; }
-  .fact span.k{ color:var(--muted); min-width:18px; }
-  .fact a{ color:var(--accent); }
-  .btn-row{ display:flex; flex-wrap:wrap; gap:12px; margin-top:30px; grid-column:1 / -1; }
+  .tabs::-webkit-scrollbar{ display:none; }
+  .tab{
+    display:flex; align-items:center; gap:8px; padding:0 16px;
+    color:var(--muted); font-size:13px; border-right:1px solid var(--border);
+    white-space:nowrap; cursor:pointer; transition:.15s; position:relative;
+  }
+  .tab .ico{ width:8px; height:8px; border-radius:50%; background:var(--orange); }
+  .tab:hover{ color:var(--text); }
+  .tab.active{ color:var(--text); background:var(--bg); }
+  .tab.active::after{ content:""; position:absolute; left:0; right:0; top:0; height:2px; background:var(--green); }
+
+  /* ---------- Layout: sidebar + editor ---------- */
+  .shell{ display:flex; align-items:flex-start; }
+  .sidebar{
+    position:sticky; top:calc(var(--title-h) + var(--tab-h));
+    width:230px; flex:0 0 230px;
+    height:calc(100vh - var(--title-h) - var(--tab-h) - var(--status-h));
+    background:var(--panel-2); border-right:1px solid var(--border);
+    padding:14px 0; overflow-y:auto; font-size:12.5px;
+  }
+  .sb-title{ color:var(--muted); padding:4px 16px 10px; letter-spacing:.14em; font-size:10.5px; }
+  .sb-group{ margin-bottom:4px; }
+  .sb-folder{ color:var(--text); padding:5px 14px; display:flex; align-items:center; gap:7px; }
+  .sb-folder .car{ color:var(--muted); font-size:9px; }
+  .sb-folder .ico{ width:8px; height:8px; border-radius:50%; background:var(--orange); }
+  .sb-item{ display:block; color:var(--muted); padding:5px 14px 5px 38px; transition:.15s; }
+  .sb-item::before{ content:"# "; color:#555; }
+  .sb-item:hover{ color:var(--green); background:rgba(255,255,255,.03); }
+
+  /* ---------- Editor / code area ---------- */
+  .editor{ flex:1; min-width:0; position:relative; counter-reset:ln; padding:8px 0 60px; }
+  .editor::before{ /* gutter divider */
+    content:""; position:absolute; top:0; bottom:0; left:54px; width:1px; background:var(--border);
+  }
+  .line{ position:relative; padding:0 34px 0 74px; }
+  .line::before{
+    counter-increment:ln; content:counter(ln);
+    position:absolute; left:0; width:42px; text-align:right;
+    color:var(--gutter); font-size:13px; user-select:none; padding-top:.1em;
+  }
+  .blank{ height:14px; }
+  .indent{ padding-left:110px; }
+  .indent::before{ width:78px; }
+
+  /* code-comment section markers */
+  .marker{ color:var(--comment); }
+  .divider{ color:#3a3a3a; letter-spacing:1px; overflow:hidden; white-space:nowrap; }
+
+  /* ---------- Reusable "viewer" panels (rendered output) ---------- */
+  .panel{
+    background:var(--card); border:1px solid var(--border); border-radius:12px;
+    margin:10px 0; font-family:'Geist', var(--mono);
+  }
+  .panel-head{
+    font-family:var(--mono); font-size:11px; color:var(--muted);
+    padding:8px 14px; border-bottom:1px solid var(--border);
+    display:flex; align-items:center; gap:8px;
+  }
+  .panel-head .ico{ width:8px; height:8px; border-radius:50%; background:var(--green); }
+  .panel-body{ padding:26px; }
+
+  h1,h2,h3{ font-family:'Geist', var(--mono); letter-spacing:-.01em; }
+
+  /* hero */
+  .hero-grid{ display:grid; grid-template-columns:1.2fr .9fr; gap:30px; }
+  .hero h1{ font-size:clamp(28px,4vw,42px); font-weight:600; }
+  .hero .role{ color:var(--green); font-family:var(--mono); font-size:14px; margin:6px 0 16px; }
+  .hero .lead{ color:var(--muted); font-size:18px; font-family:'Geist'; max-width:32ch; }
+  .facts{ display:grid; gap:11px; align-content:start; font-family:var(--mono); font-size:13px; }
+  .facts .row{ display:flex; gap:12px; }
+  .facts .row .ln{ color:var(--orange); }
+  .facts a{ color:var(--blue); }
+  .btn-row{ display:flex; flex-wrap:wrap; gap:12px; margin-top:26px; }
   .btn{
-    display:inline-flex; align-items:center; gap:8px;
-    font-family:var(--mono); font-size:14px; font-weight:500;
-    padding:12px 20px; border-radius:12px; cursor:pointer; transition:.2s;
-    border:1px solid var(--border); background:var(--surface-2); color:var(--text);
+    font-family:var(--mono); font-size:13px; padding:11px 18px; border-radius:9px;
+    border:1px solid var(--border); background:#1d1d1d; color:var(--text); cursor:pointer; transition:.18s;
   }
-  .btn:hover{ border-color:var(--accent); color:var(--accent); }
-  .btn.primary{ background:var(--accent); color:#0c1f0e; border-color:var(--accent); }
+  .btn:hover{ border-color:var(--green); color:var(--green); }
+  .btn.primary{ background:var(--green); color:#0c1f0e; border-color:var(--green); font-weight:600; }
   .btn.primary:hover{ filter:brightness(1.08); color:#0c1f0e; }
 
-  /* ---------- Section headings ---------- */
-  .sec{ padding:64px 0; }
-  .sec-tag{ font-family:var(--mono); color:var(--accent); font-size:13px; text-transform:uppercase; letter-spacing:.12em; margin-bottom:14px; }
-  .sec-title{ font-size:clamp(28px,4vw,42px); font-weight:600; letter-spacing:-.02em; line-height:1.05; }
+  /* section titles */
+  .sec-title{ font-family:'Geist'; font-size:clamp(26px,3.6vw,38px); font-weight:600; }
   .sec-title .em{ font-style:italic; color:var(--muted); font-weight:400; }
-  .sec-head{ display:flex; justify-content:space-between; align-items:flex-end; gap:24px; margin-bottom:36px; flex-wrap:wrap; }
-  .big-year{ font-family:var(--mono); color:var(--accent); font-size:clamp(40px,8vw,90px); font-weight:600; line-height:1; }
-  .ticker{ color:var(--border); letter-spacing:.1em; overflow:hidden; white-space:nowrap; }
+  .big-year{ font-family:var(--mono); color:var(--green); font-size:clamp(34px,7vw,76px); font-weight:600; line-height:1; }
 
-  /* ---------- Academic columns ---------- */
-  .acad-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
-  .acad-col{
-    background:var(--surface); border:1px solid var(--border);
-    border-radius:var(--radius); padding:26px;
+  /* academic */
+  .acad{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+  .acad .col{ background:#1d1d1d; border:1px solid var(--border); border-radius:10px; padding:20px; }
+  .acad h3{ font-size:15px; margin-bottom:6px; }
+  .acad h3 .n{ color:var(--green); }
+  .acad .sub{ color:var(--muted); font-size:12px; margin-bottom:12px; }
+  .acad ul{ list-style:none; display:grid; gap:8px; }
+  .acad li{ color:var(--muted); font-size:13px; padding-left:16px; position:relative; font-family:var(--mono); }
+  .acad li::before{ content:"-"; position:absolute; left:0; color:var(--green); }
+
+  /* about */
+  .about{ display:grid; grid-template-columns:1fr 1fr; gap:30px; align-items:center; }
+  .about-imgs{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .about-imgs img{ border-radius:10px; aspect-ratio:1; object-fit:cover; width:100%; border:1px solid var(--border); }
+  .about-imgs img:first-child{ grid-column:1/-1; aspect-ratio:16/10; }
+  .about p{ color:var(--muted); font-family:'Geist'; font-size:16px; margin:16px 0 22px; }
+
+  /* timeline */
+  .tl{ display:grid; }
+  .tl .item{ display:grid; grid-template-columns:150px 1fr; gap:20px; padding:18px 0; border-top:1px solid var(--border); }
+  .tl .item:last-child{ border-bottom:1px solid var(--border); }
+  .tl .yr{ color:var(--orange); font-family:var(--mono); font-size:14px; }
+  .tl .role{ font-family:'Geist'; font-size:18px; font-weight:600; }
+  .tl .org{ color:var(--muted); font-size:14px; }
+  .socials{ display:flex; gap:12px; align-items:center; margin-top:24px; }
+  .socials .lbl{ color:var(--muted); }
+  .socials a{ width:38px; height:38px; border-radius:9px; background:#1d1d1d; border:1px solid var(--border); display:grid; place-items:center; transition:.18s; }
+  .socials a:hover{ border-color:var(--green); transform:translateY(-2px); }
+  .socials img{ width:18px; height:18px; }
+
+  /* work */
+  .work{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+  .work .card{ background:#1d1d1d; border:1px solid var(--border); border-radius:12px; overflow:hidden; transition:.22s; cursor:pointer; }
+  .work .card:hover{ transform:translateY(-4px); border-color:var(--green); }
+  .work .thumb{ aspect-ratio:16/10; overflow:hidden; background:#161616; }
+  .work .thumb img{ width:100%; height:100%; object-fit:cover; transition:.4s; }
+  .work .card:hover .thumb img{ transform:scale(1.04); }
+  .work .meta{ padding:16px 18px; display:flex; justify-content:space-between; align-items:center; gap:12px; }
+  .work .meta h3{ font-family:'Geist'; font-size:17px; }
+  .work .arrow{ color:var(--green); }
+
+  /* tech stack */
+  .stack{ display:grid; grid-template-columns:repeat(6,1fr); gap:14px; }
+  .chip{ position:relative; background:#1d1d1d; border:1px solid var(--border); border-radius:14px; padding:20px 12px; display:flex; flex-direction:column; align-items:center; gap:11px; transition:.18s; text-align:center; }
+  .chip:hover{ border-color:var(--green); transform:translateY(-3px); }
+  .chip img{ width:40px; height:40px; object-fit:contain; }
+  .chip span{ font-size:12px; color:var(--muted); }
+  .chip .cert{ position:absolute; top:8px; right:8px; font-size:8px; color:var(--green); border:1px solid rgba(90,238,108,.4); border-radius:5px; padding:2px 4px; }
+
+  /* blog */
+  .blog{ display:grid; grid-template-columns:1.4fr 1fr; overflow:hidden; background:#1d1d1d; border:1px solid var(--border); border-radius:12px; }
+  .blog .thumb{ aspect-ratio:16/9; background:#161616; }
+  .blog .thumb img{ width:100%; height:100%; object-fit:cover; }
+  .blog .body{ padding:28px; display:flex; flex-direction:column; justify-content:center; }
+  .blog .date{ color:var(--orange); font-family:var(--mono); font-size:13px; }
+  .blog h3{ font-family:'Geist'; font-size:24px; font-weight:600; margin:8px 0 18px; }
+
+  /* footer */
+  .foot{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:26px; }
+  .foot h3{ font-family:'Geist'; font-size:26px; margin-bottom:6px; }
+  .foot .info{ color:var(--muted); }
+  .foot h4{ color:var(--muted); font-size:10.5px; letter-spacing:.14em; margin-bottom:12px; }
+  .foot .links{ display:grid; gap:8px; }
+  .foot .links a{ color:var(--muted); }
+  .foot .links a::before{ content:"# "; color:#555; }
+  .foot .links a:hover{ color:var(--green); }
+
+  /* ---------- Status bar (bottom) ---------- */
+  .statusbar{
+    position:fixed; bottom:0; left:0; right:0; z-index:60; height:var(--status-h);
+    background:var(--green); color:#0c1f0e;
+    display:flex; align-items:center; gap:18px; padding:0 14px; font-size:11.5px; font-weight:500;
   }
-  .acad-col h3{ font-size:16px; font-weight:600; margin-bottom:16px; display:flex; gap:10px; }
-  .acad-col h3 .num{ color:var(--accent); font-family:var(--mono); }
-  .acad-col ul{ list-style:none; display:grid; gap:10px; }
-  .acad-col li{ color:var(--muted); font-size:14px; padding-left:18px; position:relative; }
-  .acad-col li::before{ content:""; position:absolute; left:0; top:9px; width:6px; height:6px; border-radius:50%; background:var(--accent); opacity:.7; }
+  .statusbar .sep{ flex:1; }
+  .statusbar .seg{ display:flex; align-items:center; gap:6px; }
+  .statusbar a{ color:#0c1f0e; }
+  .statusbar .dot{ width:7px; height:7px; border-radius:50%; background:#0c1f0e; }
 
-  /* ---------- About ---------- */
-  .about-grid{ display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:center; }
-  .about-imgs{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
-  .about-imgs img{ border-radius:16px; aspect-ratio:1; object-fit:cover; width:100%; border:1px solid var(--border); }
-  .about-imgs img:first-child{ grid-column:1 / -1; aspect-ratio:16/10; }
-  .about-text p{ color:var(--muted); font-size:17px; margin:18px 0 26px; }
-
-  /* ---------- Timeline ---------- */
-  .timeline{ display:grid; gap:0; margin-top:10px; }
-  .tl-item{
-    display:grid; grid-template-columns:160px 1fr; gap:24px;
-    padding:24px 0; border-top:1px solid var(--border); align-items:baseline;
-  }
-  .tl-item:last-child{ border-bottom:1px solid var(--border); }
-  .tl-year{ font-family:var(--mono); color:var(--accent); font-size:15px; }
-  .tl-role{ font-size:19px; font-weight:600; }
-  .tl-org{ color:var(--muted); font-size:15px; margin-top:2px; }
-  .socials{ display:flex; gap:14px; align-items:center; margin-top:36px; }
-  .socials span{ font-family:var(--mono); color:var(--muted); font-size:14px; }
-  .socials a{ width:40px; height:40px; border-radius:10px; background:var(--surface); border:1px solid var(--border); display:grid; place-items:center; transition:.2s; }
-  .socials a:hover{ border-color:var(--accent); transform:translateY(-2px); }
-  .socials img{ width:20px; height:20px; }
-
-  /* ---------- Work ---------- */
-  .work-grid{ display:grid; grid-template-columns:1fr 1fr; gap:22px; }
-  .work-card{
-    background:var(--surface); border:1px solid var(--border);
-    border-radius:var(--radius); overflow:hidden; transition:.25s; cursor:pointer;
-  }
-  .work-card:hover{ transform:translateY(-4px); border-color:var(--accent); }
-  .work-card .thumb{ aspect-ratio:16/10; background:var(--surface-2); overflow:hidden; }
-  .work-card .thumb img{ width:100%; height:100%; object-fit:cover; transition:.4s; }
-  .work-card:hover .thumb img{ transform:scale(1.04); }
-  .work-card .meta{ padding:20px 22px; display:flex; justify-content:space-between; align-items:center; gap:14px; }
-  .work-card h3{ font-size:18px; font-weight:600; }
-  .work-card .arrow{ color:var(--accent); font-size:20px; }
-
-  /* ---------- Tech stack ---------- */
-  .stack-grid{ display:grid; grid-template-columns:repeat(6,1fr); gap:16px; }
-  .chip{
-    position:relative; background:var(--surface); border:1px solid var(--border);
-    border-radius:18px; padding:22px 14px; display:flex; flex-direction:column;
-    align-items:center; gap:12px; transition:.2s; text-align:center;
-  }
-  .chip:hover{ border-color:var(--accent); transform:translateY(-3px); }
-  .chip img{ width:42px; height:42px; object-fit:contain; }
-  .chip span{ font-size:13px; color:var(--muted); }
-  .chip .cert{
-    position:absolute; top:10px; right:10px; font-family:var(--mono); font-size:9px;
-    color:var(--accent); border:1px solid rgba(90,238,108,.4); border-radius:6px; padding:2px 5px;
-  }
-
-  /* ---------- Blog ---------- */
-  .blog-card{
-    display:grid; grid-template-columns:minmax(0,1.4fr) 1fr; gap:0; overflow:hidden;
-    background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
-  }
-  .blog-card .thumb{ aspect-ratio:16/9; background:var(--surface-2); }
-  .blog-card .thumb img{ width:100%; height:100%; object-fit:cover; }
-  .blog-body{ padding:34px; display:flex; flex-direction:column; justify-content:center; }
-  .blog-date{ font-family:var(--mono); color:var(--accent); font-size:13px; }
-  .blog-body h3{ font-size:26px; font-weight:600; margin:10px 0 22px; }
-
-  /* ---------- Footer ---------- */
-  footer{ border-top:1px solid var(--border); margin-top:40px; padding:54px 0 40px; }
-  .foot-grid{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:30px; }
-  .foot-grid h4{ font-family:var(--mono); color:var(--muted); font-size:12px; text-transform:uppercase; letter-spacing:.12em; margin-bottom:16px; }
-  .foot-links{ display:grid; gap:10px; }
-  .foot-links a{ color:var(--muted); font-size:15px; transition:.2s; }
-  .foot-links a:hover{ color:var(--accent); }
-  .foot-name h3{ font-size:30px; font-weight:600; margin-bottom:8px; }
-  .foot-name p{ color:var(--muted); font-family:var(--mono); font-size:13px; }
-  .copy{ margin-top:46px; padding-top:24px; border-top:1px solid var(--border); color:var(--muted); font-family:var(--mono); font-size:12px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; }
-
-  /* ---------- Reveal animation ---------- */
-  .reveal{ opacity:0; transform:translateY(24px); transition:opacity .7s ease, transform .7s ease; }
+  /* reveal */
+  .reveal{ opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease; }
   .reveal.in{ opacity:1; transform:none; }
 
-  /* ---------- Responsive ---------- */
-  @media (max-width:980px){
-    .hero-card{ grid-template-columns:1fr; }
-    .acad-grid{ grid-template-columns:1fr; }
-    .about-grid{ grid-template-columns:1fr; }
-    .work-grid{ grid-template-columns:1fr; }
-    .stack-grid{ grid-template-columns:repeat(4,1fr); }
-    .blog-card{ grid-template-columns:1fr; }
-    .nav-links{ display:none; }
+  /* responsive */
+  @media (max-width:1000px){
+    .sidebar{ display:none; }
+    .hero-grid{ grid-template-columns:1fr; }
+    .acad{ grid-template-columns:1fr; }
+    .about{ grid-template-columns:1fr; }
+    .work{ grid-template-columns:1fr; }
+    .blog{ grid-template-columns:1fr; }
+    .stack{ grid-template-columns:repeat(4,1fr); }
   }
   @media (max-width:640px){
-    .nav-status .loc{ display:none; }
-    .stack-grid{ grid-template-columns:repeat(3,1fr); }
-    .tl-item{ grid-template-columns:1fr; gap:6px; }
-    .hero-card{ padding:26px; }
+    .line{ padding:0 16px 0 52px; }
+    .line::before{ width:30px; font-size:11px; }
+    .editor::before{ left:40px; }
+    .indent{ padding-left:64px; } .indent::before{ width:48px; }
+    .stack{ grid-template-columns:repeat(3,1fr); }
+    .tl .item{ grid-template-columns:1fr; gap:4px; }
+    .title .path{ display:none; }
+    .win-actions{ display:none; }
   }
 </style>
 </head>
 <body>
 
-<!-- ===================== NAV ===================== -->
-<header class="nav">
-  <div class="wrap nav-inner">
-    <a class="brand" href="#top">
-      <img src="https://framerusercontent.com/images/f7B1ryJWKG1LEkHlCQbaiClSeUI.jpeg" alt="Johann Steinhoff">
-      Johann Steinhoff
-    </a>
-    <nav class="nav-links">
-      <a href="#about">johann.info</a>
-      <a href="#work">work.done</a>
-      <a href="#extras">extras.ynot</a>
-    </nav>
-    <div class="nav-status">
-      <span class="pill"><span class="dot"></span>Open to new work</span>
-      <a class="loc" href="https://maps.app.goo.gl/MFVuayVhQtZGsC4dA" target="_blank" rel="noopener">📍 San Marcos, Texas</a>
-      <span class="clock">My time: <b id="clock">--:--</b></span>
-    </div>
+<!-- ===================== TITLE BAR ===================== -->
+<div class="titlebar">
+  <div class="lights"><i class="r"></i><i class="y"></i><i class="g"></i></div>
+  <div class="title"><span class="path">~/ </span><b>johann_steinhoff</b><span class="accent"> — </span>portfolio</div>
+  <div class="win-actions">
+    <a href="mailto:johannxsteinhoff@gmail.com">message</a>
+    <a href="#contact">contact</a>
   </div>
-</header>
+</div>
 
-<a id="top"></a>
+<!-- ===================== TAB BAR ===================== -->
+<div class="tabs" id="tabs">
+  <div class="tab active" data-target="#about"><span class="ico"></span>johann.info</div>
+  <div class="tab" data-target="#work"><span class="ico" style="background:#9d9d9d"></span>work.done</div>
+  <div class="tab" data-target="#extras"><span class="ico" style="background:#9d9d9d"></span>extras.ynot</div>
+</div>
 
-<!-- ===================== HERO ===================== -->
-<section class="hero">
-  <div class="wrap">
-    <div class="welcome reveal">Welcome to my world!</div>
-    <div class="hero-card reveal">
-      <div>
-        <h1>Johann Steinhoff</h1>
-        <div class="role">Computer Science Student</div>
-        <p class="lead">I'm excited to be a human who will help the world using technology.</p>
-      </div>
-      <div class="facts">
-        <div class="fact"><span class="k mono">01</span> Bachelors In Computer Science — 2026</div>
-        <div class="fact"><span class="k mono">02</span> San Marcos, TX USA</div>
-        <div class="fact"><span class="k mono">03</span> English, German</div>
-        <div class="fact"><span class="k mono">04</span> <a href="mailto:johannxsteinhoff@gmail.com">johannxsteinhoff@gmail.com</a></div>
-        <div class="fact"><span class="k mono">05</span> <a href="tel:+18322922919">+1 (832)-292-2919</a></div>
-      </div>
-      <div class="btn-row">
-        <a class="btn primary" href="https://drive.google.com/file/d/1xyUFAcntqcEYi382X8YwD-rgUcbnxQRZ/view?usp=sharing" target="_blank" rel="noopener">Download CV ↓</a>
-        <a class="btn" href="mailto:johannxsteinhoff@gmail.com">Shoot me a message</a>
-        <a class="btn" href="#contact">Work with me</a>
-      </div>
-    </div>
-  </div>
-</section>
+<div class="shell">
 
-<!-- ===================== INTRO / TXST ===================== -->
-<section class="sec">
-  <div class="wrap reveal">
-    <div class="sec-tag">Hero</div>
-    <h2 class="sec-title" style="max-width:18ch">TXST Computer Science <span class="accent">Student</span></h2>
-    <p class="lead" style="color:var(--muted);font-size:19px;max-width:60ch;margin-top:18px">
-      Computer Science Bachelors at Texas State, with a minor in communications and mathematics. Interested in how things work.
-    </p>
-  </div>
-</section>
+  <!-- ===================== SIDEBAR / EXPLORER ===================== -->
+  <aside class="sidebar">
+    <div class="sb-title">EXPLORER — PORTFOLIO</div>
+    <div class="sb-group">
+      <div class="sb-folder"><span class="car">▾</span><span class="ico"></span>johann.info</div>
+      <a class="sb-item" href="#hero">hero</a>
+      <a class="sb-item" href="#academic">academic</a>
+      <a class="sb-item" href="#about">about</a>
+    </div>
+    <div class="sb-group">
+      <div class="sb-folder"><span class="car">▾</span><span class="ico" style="background:#9d9d9d"></span>work.done</div>
+      <a class="sb-item" href="#work">projects</a>
+      <a class="sb-item" href="#stack">tech-stack</a>
+    </div>
+    <div class="sb-group">
+      <div class="sb-folder"><span class="car">▾</span><span class="ico" style="background:#9d9d9d"></span>extras.ynot</div>
+      <a class="sb-item" href="#extras">timeline</a>
+      <a class="sb-item" href="#blog">blog</a>
+      <a class="sb-item" href="#contact">contact</a>
+    </div>
+  </aside>
 
-<!-- ===================== ACADEMIC EXPERIENCE ===================== -->
-<section class="sec" id="academic">
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <div>
-        <div class="sec-tag">Academic Experience</div>
-        <div class="big-year">Class of 2026</div>
-      </div>
-    </div>
-    <div class="acad-grid">
-      <div class="acad-col reveal">
-        <h3><span class="num">1.</span> Computer Science <small style="color:var(--muted);font-weight:400">(In Progress)</small></h3>
-        <p style="color:var(--muted);font-size:13px;margin-bottom:14px">College of Science and Engineering</p>
-        <ul>
-          <li>Computer Systems Security</li>
-          <li>Object Oriented Design &amp; Programming</li>
-          <li>Artificial Intelligence (before May 2026)</li>
-          <li>Computer Architecture</li>
-          <li>Data Structures and Algorithms</li>
-        </ul>
-      </div>
-      <div class="acad-col reveal">
-        <h3><span class="num">2.</span> Mathematics and Communication</h3>
-        <ul>
-          <li>Calculus I, II &amp; III</li>
-          <li>Discrete Mathematics I &amp; II</li>
-          <li>Linear Algebra</li>
-          <li>Leadership</li>
-          <li>Public Speaking</li>
-          <li>Interpersonal Communications</li>
-        </ul>
-      </div>
-      <div class="acad-col reveal">
-        <h3><span class="num">3.</span> Independent Studies and Certifications</h3>
-        <ul>
-          <li>Stanford Online: Machine Learning Specialization</li>
-          <li>Certiport: Python Certification</li>
-          <li>NAUI: Open Water Certification</li>
-          <li>Certiport: Java Certification</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
+  <!-- ===================== EDITOR ===================== -->
+  <main class="editor">
 
-<!-- ===================== ABOUT ===================== -->
-<section class="sec" id="about">
-  <div class="wrap">
-    <div class="about-grid">
-      <div class="about-imgs reveal">
-        <img src="https://framerusercontent.com/images/hZbaBDl5jQDhT0cv98ZavE5jSk.jpeg" alt="Johann">
-        <img src="https://framerusercontent.com/images/Uq0qb1IEVnqzI2DoBYkekLwvOZc.jpg" alt="Johann">
-        <img src="https://framerusercontent.com/images/SfH1EfJ3FhhtYfEON5MSULv3ig.jpg" alt="Johann">
+    <!-- HERO -->
+    <div class="line"><span class="cmt">&lt;!-- Welcome to my world! --&gt;</span></div>
+    <div class="line blank"></div>
+    <section id="hero" class="hero">
+      <div class="line reveal">
+        <div class="panel">
+          <div class="panel-head"><span class="ico"></span>johann.info — preview</div>
+          <div class="panel-body">
+            <div class="hero-grid">
+              <div>
+                <h1>Johann Steinhoff</h1>
+                <div class="role">Computer Science Student</div>
+                <p class="lead">I'm excited to be a human who will help the world using technology.</p>
+                <div class="btn-row">
+                  <a class="btn primary" href="https://drive.google.com/file/d/1xyUFAcntqcEYi382X8YwD-rgUcbnxQRZ/view?usp=sharing" target="_blank" rel="noopener">Download CV ↓</a>
+                  <a class="btn" href="mailto:johannxsteinhoff@gmail.com">Shoot me a message</a>
+                  <a class="btn" href="#contact">Work with me</a>
+                </div>
+              </div>
+              <div class="facts">
+                <div class="row"><span class="ln">01</span> Bachelors In Computer Science — 2026</div>
+                <div class="row"><span class="ln">02</span> San Marcos, TX USA</div>
+                <div class="row"><span class="ln">03</span> English, German</div>
+                <div class="row"><span class="ln">04</span> <a href="mailto:johannxsteinhoff@gmail.com">johannxsteinhoff@gmail.com</a></div>
+                <div class="row"><span class="ln">05</span> <a href="tel:+18322922919">+1 (832)-292-2919</a></div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="about-text reveal">
-        <div class="sec-tag">About me</div>
-        <h2 class="sec-title">Inside My <span class="em">Creative Core</span></h2>
-        <p>
-          With little tech in the house, I learned to build what I couldn't buy—starting with a DIY PC that kicked off my
-          love for computing. I experimented with networks and micro-controllers (esp32, Digispark), pulled a few harmless
-          pranks, and discovered how systems break—and how to design them better. That mix of curiosity and persistence now
-          fuels my work: clean interfaces, robust systems, and creative solutions that help people.
-        </p>
-        <a class="btn primary" href="https://drive.google.com/file/d/1xyUFAcntqcEYi382X8YwD-rgUcbnxQRZ/view?usp=sharing" target="_blank" rel="noopener">Download CV ↓</a>
-      </div>
-    </div>
-  </div>
-</section>
+    </section>
 
-<!-- ===================== TIMELINE (In a previous life) ===================== -->
-<section class="sec" id="extras">
-  <div class="wrap">
-    <div class="sec-head reveal"><div><div class="sec-tag">In a previous life</div></div></div>
-    <div class="timeline">
-      <div class="tl-item reveal">
-        <div class="tl-year">2022 – 2026</div>
-        <div><div class="tl-role">BS in CS, Minors in COMM and MATH</div><div class="tl-org">Texas State University</div></div>
-      </div>
-      <div class="tl-item reveal">
-        <div class="tl-year">2023 – 2024</div>
-        <div><div class="tl-role">Help Desk Technician</div><div class="tl-org">ITAC — TXST</div></div>
-      </div>
-      <div class="tl-item reveal">
-        <div class="tl-year">2021 – 2022</div>
-        <div><div class="tl-role">Student Intern</div><div class="tl-org">Verizon &amp; Eagles Trace Assisted Living Facility</div></div>
-      </div>
-      <div class="tl-item reveal">
-        <div class="tl-year">2016 – 2022</div>
-        <div><div class="tl-role">Westside Highschool</div><div class="tl-org">Computer Science Pathway</div></div>
-      </div>
-    </div>
-    <div class="socials reveal">
-      <span>Follow me:</span>
-      <a href="https://www.linkedin.com/in/johann-steinhoff-b95b962a7" target="_blank" rel="noopener" title="LinkedIn">
-        <img src="https://framerusercontent.com/images/qI1GYHcIOTyDnqFSqjYz6j4qkc.png" alt="LinkedIn">
-      </a>
-      <a href="https://git.txstate.edu/Johann" target="_blank" rel="noopener" title="Git">
-        <img src="https://framerusercontent.com/images/lWmIFEz2sSvGpcyC4nAhQCEvFVQ.png" alt="Git">
-      </a>
-    </div>
-  </div>
-</section>
+    <div class="line blank"></div>
+    <div class="line"><span class="cmt">&lt;!-- Hero section --&gt;</span></div>
+    <div class="line reveal"><span class="kw">const</span> <span class="str">role</span> = <span class="str">"TXST Computer Science Student"</span>;</div>
+    <div class="line reveal mut indent">Computer Science Bachelors at Texas State, with a minor in communications and mathematics. Interested in how things work.</div>
 
-<!-- ===================== WORK & PROJECTS ===================== -->
-<section class="sec" id="work">
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <div><div class="sec-tag">Featured work</div><h2 class="sec-title">Work &amp; <span class="em">projects</span></h2></div>
-    </div>
-    <div class="work-grid">
-      <div class="work-card reveal">
-        <div class="thumb"><img src="https://framerusercontent.com/images/3NazvpHiEMrxBVnHOrCkTmn36WE.png" alt="Offensive Security Simulation"></div>
-        <div class="meta"><h3>Offensive Security Simulation</h3><span class="arrow">↗</span></div>
+    <!-- ACADEMIC -->
+    <div class="line blank"></div>
+    <div class="line"><span class="cmt">&lt;!-- Academic Experience --&gt;</span></div>
+    <section id="academic">
+      <div class="line reveal"><span class="mut">// Class of</span> <span class="big-year" style="vertical-align:middle">2026</span></div>
+      <div class="line reveal">
+        <div class="acad">
+          <div class="col">
+            <h3><span class="n">1.</span> Computer Science <span class="mut" style="font-weight:400">(In Progress)</span></h3>
+            <div class="sub">College of Science and Engineering</div>
+            <ul>
+              <li>Computer Systems Security</li>
+              <li>Object Oriented Design &amp; Programming</li>
+              <li>Artificial Intelligence (before May 2026)</li>
+              <li>Computer Architecture</li>
+              <li>Data Structures and Algorithms</li>
+            </ul>
+          </div>
+          <div class="col">
+            <h3><span class="n">2.</span> Mathematics and Communication</h3>
+            <ul>
+              <li>Calculus I, II &amp; III</li>
+              <li>Discrete Mathematics I &amp; II</li>
+              <li>Linear Algebra</li>
+              <li>Leadership</li>
+              <li>Public Speaking</li>
+              <li>Interpersonal Communications</li>
+            </ul>
+          </div>
+          <div class="col">
+            <h3><span class="n">3.</span> Independent Studies and Certifications</h3>
+            <ul>
+              <li>Stanford Online: Machine Learning Specialization</li>
+              <li>Certiport: Python Certification</li>
+              <li>NAUI: Open Water Certification</li>
+              <li>Certiport: Java Certification</li>
+            </ul>
+          </div>
+        </div>
       </div>
-      <div class="work-card reveal">
-        <div class="thumb"><img src="https://framerusercontent.com/images/d5H03qwxB7Pcybcnpl0HTHHktIg.png" alt="Predicting Texas Agricultural Production"></div>
-        <div class="meta"><h3>Predicting Texas Agricultural Production Using Climate Data</h3><span class="arrow">↗</span></div>
-      </div>
-      <div class="work-card reveal">
-        <div class="thumb"><img src="https://framerusercontent.com/images/BM9pb8VQBASoo2z7B4mPNIOQxjE.png" alt="Arithmetic Logic Unit"></div>
-        <div class="meta"><h3>Arithmetic Logic Unit</h3><span class="arrow">↗</span></div>
-      </div>
-      <div class="work-card reveal">
-        <div class="thumb"><img src="https://framerusercontent.com/images/Qoz2cSSqkFk4Mu0XoUijCsDH10.png" alt="Object Oriented Chess"></div>
-        <div class="meta"><h3>Object Oriented Chess</h3><span class="arrow">↗</span></div>
-      </div>
-    </div>
-  </div>
-</section>
+    </section>
 
-<!-- ===================== TECH STACK ===================== -->
-<section class="sec" id="stack">
-  <div class="wrap">
-    <div class="sec-head reveal"><div><div class="sec-tag">My tech stack</div><h2 class="sec-title">Tools I <span class="em">build with</span></h2></div></div>
-    <div class="stack-grid reveal">
-      <div class="chip"><span class="cert">Certified</span><img src="https://framerusercontent.com/images/WjxyoCYFkan9DB2EuYl7Oir17x4.svg" alt="Python"><span>Python</span></div>
-      <div class="chip"><span class="cert">Certified</span><img src="https://framerusercontent.com/images/srkGECmxUx0TIeWjKRVgoYwTadk.webp" alt="Java"><span>Java</span></div>
-      <div class="chip"><img src="https://framerusercontent.com/images/MbZsTncVAGmVlUjapJjOjKpNRyQ.png" alt="Microsoft Visual C++"><span>Microsoft Visual C++</span></div>
-      <div class="chip"><img src="https://framerusercontent.com/images/OfiAAsWQMUNhkdJuLfQzDfqIgA.png" alt="C"><span>C</span></div>
-      <div class="chip"><img src="https://framerusercontent.com/images/z5jw3IHgjHqbk76cT6J7K5kUeyY.png" alt="Arduino"><span>Arduino</span></div>
-      <div class="chip"><img src="https://framerusercontent.com/images/6RLYnNKkZZL0yaxKDGjrkuHwU.png" alt="Jupyter"><span>Jupyter</span></div>
-      <div class="chip"><img src="https://framerusercontent.com/images/szHGclLZQptWvoiEVsa1zfD3S2s.svg" alt="GitHub"><span>Github</span></div>
-      <div class="chip"><img src="https://framerusercontent.com/images/h3i8jvN8HEhbRE7MGDLmEMcgA.jpg" alt="Adobe Suite"><span>Adobe Suite</span></div>
-      <div class="chip"><img src="https://framerusercontent.com/images/dv0QVP0Sk8BC9CZbA53mCCqMv4M.png" alt="Google Suite"><span>Google Suite</span></div>
-      <div class="chip"><img src="https://framerusercontent.com/images/bZakR0kBScmGOOAmYbnmuFBgu04.png" alt="Microsoft Suite"><span>Microsoft Suite</span></div>
-      <div class="chip"><img src="https://framerusercontent.com/images/bNE7yUUXXvjcQwVYYhp7ePYoQ.svg" alt="Framer"><span>Framer</span></div>
-      <div class="chip"><img src="https://framerusercontent.com/images/L4XelwxWM5j6E3zPU9tRrtRypw.webp" alt="FL Studio"><span>FL Studio</span></div>
-    </div>
-  </div>
-</section>
-
-<!-- ===================== BLOG ===================== -->
-<section class="sec" id="blog">
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <div><div class="sec-tag">Insights &amp; Ideas</div><h2 class="sec-title">From My <span class="em">Desk</span></h2></div>
-      <a class="btn" href="#blog">View all blog →</a>
-    </div>
-    <div class="blog-card reveal">
-      <div class="thumb"><img src="https://framerusercontent.com/images/x9jMlxBxkY2hH8OQ0eqsgREzl68.png" alt="FPV Drones"></div>
-      <div class="blog-body">
-        <div class="blog-date">Oct 10, 2025</div>
-        <h3>FPV Drones: How they Work</h3>
-        <a class="btn primary" href="#blog" style="align-self:flex-start">Read full blog →</a>
+    <!-- ABOUT -->
+    <div class="line blank"></div>
+    <div class="line"><span class="cmt">&lt;!-- About me section --&gt;</span></div>
+    <section id="about">
+      <div class="line reveal">
+        <div class="about">
+          <div class="about-imgs">
+            <img src="https://framerusercontent.com/images/hZbaBDl5jQDhT0cv98ZavE5jSk.jpeg" alt="Johann">
+            <img src="https://framerusercontent.com/images/Uq0qb1IEVnqzI2DoBYkekLwvOZc.jpg" alt="Johann">
+            <img src="https://framerusercontent.com/images/SfH1EfJ3FhhtYfEON5MSULv3ig.jpg" alt="Johann">
+          </div>
+          <div>
+            <h2 class="sec-title">Inside My <span class="em">Creative Core</span></h2>
+            <p>With little tech in the house, I learned to build what I couldn't buy—starting with a DIY PC that kicked off my love for computing. I experimented with networks and micro-controllers (esp32, Digispark), pulled a few harmless pranks, and discovered how systems break—and how to design them better. That mix of curiosity and persistence now fuels my work: clean interfaces, robust systems, and creative solutions that help people.</p>
+            <a class="btn primary" href="https://drive.google.com/file/d/1xyUFAcntqcEYi382X8YwD-rgUcbnxQRZ/view?usp=sharing" target="_blank" rel="noopener">Download CV ↓</a>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-</section>
+    </section>
 
-<!-- ===================== FOOTER / CONTACT ===================== -->
-<footer id="contact">
-  <div class="wrap">
-    <div class="foot-grid">
-      <div class="foot-name">
-        <h3>Johann Steinhoff</h3>
-        <p>johannxsteinhoff@gmail.com · +1 (832)-292-2919</p>
-        <div class="socials" style="margin-top:22px">
+    <!-- TIMELINE -->
+    <div class="line blank"></div>
+    <div class="line"><span class="cmt">&lt;!-- In a previous life --&gt;</span></div>
+    <section id="extras">
+      <div class="line reveal">
+        <div class="tl">
+          <div class="item"><div class="yr">2022 – 2026</div><div><div class="role">BS in CS, Minors in COMM and MATH</div><div class="org">Texas State University</div></div></div>
+          <div class="item"><div class="yr">2023 – 2024</div><div><div class="role">Help Desk Technician</div><div class="org">ITAC — TXST</div></div></div>
+          <div class="item"><div class="yr">2021 – 2022</div><div><div class="role">Student Intern</div><div class="org">Verizon &amp; Eagles Trace Assisted Living Facility</div></div></div>
+          <div class="item"><div class="yr">2016 – 2022</div><div><div class="role">Westside Highschool</div><div class="org">Computer Science Pathway</div></div></div>
+        </div>
+        <div class="socials">
+          <span class="lbl">Follow me:</span>
           <a href="https://www.linkedin.com/in/johann-steinhoff-b95b962a7" target="_blank" rel="noopener" title="LinkedIn"><img src="https://framerusercontent.com/images/qI1GYHcIOTyDnqFSqjYz6j4qkc.png" alt="LinkedIn"></a>
           <a href="https://git.txstate.edu/Johann" target="_blank" rel="noopener" title="Git"><img src="https://framerusercontent.com/images/lWmIFEz2sSvGpcyC4nAhQCEvFVQ.png" alt="Git"></a>
         </div>
       </div>
-      <div>
-        <h4>Content</h4>
-        <div class="foot-links">
-          <a href="#academic">Academic Experience</a>
-          <a href="#about">About me</a>
-          <a href="#work">Projects</a>
-          <a href="#stack">Tech stack</a>
-          <a href="#blog">Blog</a>
-          <a href="#contact">Contact me</a>
+    </section>
+
+    <!-- WORK -->
+    <div class="line blank"></div>
+    <div class="line"><span class="cmt">&lt;!-- Featured work --&gt;</span></div>
+    <div class="line reveal"><span class="sec-title">Work &amp; <span class="em">projects</span></span></div>
+    <section id="work">
+      <div class="line reveal">
+        <div class="work">
+          <div class="card"><div class="thumb"><img src="https://framerusercontent.com/images/3NazvpHiEMrxBVnHOrCkTmn36WE.png" alt="Offensive Security Simulation"></div><div class="meta"><h3>Offensive Security Simulation</h3><span class="arrow">↗</span></div></div>
+          <div class="card"><div class="thumb"><img src="https://framerusercontent.com/images/d5H03qwxB7Pcybcnpl0HTHHktIg.png" alt="Predicting Texas Agricultural Production"></div><div class="meta"><h3>Predicting Texas Agricultural Production Using Climate Data</h3><span class="arrow">↗</span></div></div>
+          <div class="card"><div class="thumb"><img src="https://framerusercontent.com/images/BM9pb8VQBASoo2z7B4mPNIOQxjE.png" alt="Arithmetic Logic Unit"></div><div class="meta"><h3>Arithmetic Logic Unit</h3><span class="arrow">↗</span></div></div>
+          <div class="card"><div class="thumb"><img src="https://framerusercontent.com/images/Qoz2cSSqkFk4Mu0XoUijCsDH10.png" alt="Object Oriented Chess"></div><div class="meta"><h3>Object Oriented Chess</h3><span class="arrow">↗</span></div></div>
         </div>
       </div>
-    </div>
-    <div class="copy">
-      <span>© <span id="year"></span> Johann Steinhoff — johannxsteinhoff@gmail.com — +1 (832)-292-2919</span>
-      <span>Built &amp; hosted independently.</span>
-    </div>
-  </div>
-</footer>
+    </section>
+
+    <!-- TECH STACK -->
+    <div class="line blank"></div>
+    <div class="line"><span class="cmt">&lt;!-- My tech stack --&gt;</span></div>
+    <section id="stack">
+      <div class="line reveal">
+        <div class="stack">
+          <div class="chip"><span class="cert">Certified</span><img src="https://framerusercontent.com/images/WjxyoCYFkan9DB2EuYl7Oir17x4.svg" alt="Python"><span>Python</span></div>
+          <div class="chip"><span class="cert">Certified</span><img src="https://framerusercontent.com/images/srkGECmxUx0TIeWjKRVgoYwTadk.webp" alt="Java"><span>Java</span></div>
+          <div class="chip"><img src="https://framerusercontent.com/images/MbZsTncVAGmVlUjapJjOjKpNRyQ.png" alt="Microsoft Visual C++"><span>Microsoft Visual C++</span></div>
+          <div class="chip"><img src="https://framerusercontent.com/images/OfiAAsWQMUNhkdJuLfQzDfqIgA.png" alt="C"><span>C</span></div>
+          <div class="chip"><img src="https://framerusercontent.com/images/z5jw3IHgjHqbk76cT6J7K5kUeyY.png" alt="Arduino"><span>Arduino</span></div>
+          <div class="chip"><img src="https://framerusercontent.com/images/6RLYnNKkZZL0yaxKDGjrkuHwU.png" alt="Jupyter"><span>Jupyter</span></div>
+          <div class="chip"><img src="https://framerusercontent.com/images/szHGclLZQptWvoiEVsa1zfD3S2s.svg" alt="GitHub"><span>Github</span></div>
+          <div class="chip"><img src="https://framerusercontent.com/images/h3i8jvN8HEhbRE7MGDLmEMcgA.jpg" alt="Adobe Suite"><span>Adobe Suite</span></div>
+          <div class="chip"><img src="https://framerusercontent.com/images/dv0QVP0Sk8BC9CZbA53mCCqMv4M.png" alt="Google Suite"><span>Google Suite</span></div>
+          <div class="chip"><img src="https://framerusercontent.com/images/bZakR0kBScmGOOAmYbnmuFBgu04.png" alt="Microsoft Suite"><span>Microsoft Suite</span></div>
+          <div class="chip"><img src="https://framerusercontent.com/images/bNE7yUUXXvjcQwVYYhp7ePYoQ.svg" alt="Framer"><span>Framer</span></div>
+          <div class="chip"><img src="https://framerusercontent.com/images/L4XelwxWM5j6E3zPU9tRrtRypw.webp" alt="FL Studio"><span>FL Studio</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BLOG -->
+    <div class="line blank"></div>
+    <div class="line"><span class="cmt">&lt;!-- Insights &amp; Ideas --&gt;</span></div>
+    <div class="line reveal"><span class="sec-title">From My <span class="em">Desk</span></span></div>
+    <section id="blog">
+      <div class="line reveal">
+        <div class="blog">
+          <div class="thumb"><img src="https://framerusercontent.com/images/x9jMlxBxkY2hH8OQ0eqsgREzl68.png" alt="FPV Drones"></div>
+          <div class="body">
+            <div class="date">Oct 10, 2025</div>
+            <h3>FPV Drones: How they Work</h3>
+            <a class="btn primary" href="#blog" style="align-self:flex-start">Read full blog →</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT / FOOTER -->
+    <div class="line blank"></div>
+    <div class="line"><span class="cmt">&lt;!-- Contact me --&gt;</span></div>
+    <section id="contact">
+      <div class="line reveal">
+        <div class="foot">
+          <div>
+            <h3>Johann Steinhoff</h3>
+            <div class="info">johannxsteinhoff@gmail.com · +1 (832)-292-2919</div>
+            <div class="socials" style="margin-top:18px">
+              <a href="https://www.linkedin.com/in/johann-steinhoff-b95b962a7" target="_blank" rel="noopener" title="LinkedIn"><img src="https://framerusercontent.com/images/qI1GYHcIOTyDnqFSqjYz6j4qkc.png" alt="LinkedIn"></a>
+              <a href="https://git.txstate.edu/Johann" target="_blank" rel="noopener" title="Git"><img src="https://framerusercontent.com/images/lWmIFEz2sSvGpcyC4nAhQCEvFVQ.png" alt="Git"></a>
+            </div>
+          </div>
+          <div>
+            <h4>CONTENT</h4>
+            <div class="links">
+              <a href="#academic">Academic Experience</a>
+              <a href="#about">About me</a>
+              <a href="#work">Projects</a>
+              <a href="#stack">Tech stack</a>
+              <a href="#blog">Blog</a>
+              <a href="#contact">Contact me</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="line blank"></div>
+    <div class="line"><span class="cmt">// © <span id="year"></span> Johann Steinhoff — built &amp; hosted independently</span></div>
+    <div class="line blank"></div>
+
+  </main>
+</div>
+
+<!-- ===================== STATUS BAR ===================== -->
+<div class="statusbar">
+  <span class="seg"><span class="dot"></span> Open to new work</span>
+  <span class="seg">⎇ main</span>
+  <span class="sep"></span>
+  <span class="seg"><a href="https://maps.app.goo.gl/MFVuayVhQtZGsC4dA" target="_blank" rel="noopener">📍 San Marcos, Texas</a></span>
+  <span class="seg">My time: <b id="clock">--:--</b></span>
+  <span class="seg">UTF-8</span>
+  <span class="seg">HTML</span>
+</div>
 
 <script>
-  /* ---- Live clock in San Marcos / Central Time ---- */
+  /* live clock — Central Time (San Marcos, TX) */
   function tick(){
-    const el = document.getElementById('clock');
-    if(!el) return;
-    el.textContent = new Intl.DateTimeFormat('en-US',{
-      hour:'2-digit', minute:'2-digit', hour12:true, timeZone:'America/Chicago'
-    }).format(new Date());
+    var el=document.getElementById('clock'); if(!el) return;
+    el.textContent=new Intl.DateTimeFormat('en-US',{hour:'2-digit',minute:'2-digit',hour12:true,timeZone:'America/Chicago'}).format(new Date());
   }
-  tick(); setInterval(tick, 1000);
+  tick(); setInterval(tick,1000);
+  document.getElementById('year').textContent=new Date().getFullYear();
 
-  /* ---- Current year in footer ---- */
-  document.getElementById('year').textContent = new Date().getFullYear();
+  /* tab clicks -> scroll + active state */
+  document.querySelectorAll('.tab').forEach(function(t){
+    t.addEventListener('click',function(){
+      document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('active');});
+      t.classList.add('active');
+      var tgt=document.querySelector(t.dataset.target);
+      if(tgt) tgt.scrollIntoView({behavior:'smooth'});
+    });
+  });
 
-  /* ---- Scroll reveal animations ---- */
-  const io = new IntersectionObserver((entries)=>{
-    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
-  }, { threshold:0.12 });
-  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+  /* scroll reveal */
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+  },{threshold:0.1});
+  document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});
 </script>
 
 </body>
