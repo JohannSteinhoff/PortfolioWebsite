@@ -130,11 +130,11 @@
   .socials img{ width:18px; height:18px; }
 
   .work{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }
-  .work .card{ background:#1d1d1d; border:1px solid var(--border); border-radius:12px; overflow:hidden; transition:.22s; cursor:pointer; }
+  .work .card{ display:block; background:#1d1d1d; border:1px solid var(--border); border-radius:12px; overflow:hidden; transition:.22s; cursor:pointer; }
   .work .card:hover{ transform:translateY(-4px); border-color:var(--green); }
   .work .thumb{ aspect-ratio:16/10; overflow:hidden; background:#161616; }
-  .work .thumb img{ width:100%; height:100%; object-fit:cover; transition:.4s; }
-  .work .card:hover .thumb img{ transform:scale(1.04); }
+  .work .thumb img{ width:100%; height:100%; object-fit:cover; filter:grayscale(1); transition:filter .45s ease, transform .45s ease; }
+  .work .card:hover .thumb img{ filter:grayscale(0); transform:scale(1.04); }
   .work .meta{ padding:16px 18px; display:flex; justify-content:space-between; align-items:center; gap:12px; }
   .work .meta h3{ font-family:'Geist'; font-size:17px; } .work .arrow{ color:var(--green); }
 
@@ -192,6 +192,44 @@
   .term-row{ display:flex; gap:8px; align-items:center; }
   .term-prompt{ color:var(--green); white-space:nowrap; } .term-prompt .path{ color:var(--blue); }
   .term-input{ flex:1; background:transparent; border:0; color:var(--text); font-family:var(--mono); font-size:13px; outline:none; }
+
+  /* ---------- Project detail overlay (opens like a file) ---------- */
+  .proj{ position:fixed; inset:var(--title-h) 0 var(--status-h) 0; z-index:70; background:var(--bg); display:none; flex-direction:column; }
+  .proj.open{ display:flex; }
+  .proj-tabbar{ height:var(--tab-h); flex:0 0 auto; background:var(--panel); border-bottom:1px solid var(--border); display:flex; align-items:stretch; }
+  .proj-tab{ display:flex; align-items:center; gap:8px; padding:0 16px; color:var(--text); font-size:13px; background:var(--bg); border-right:1px solid var(--border); position:relative; }
+  .proj-tab .ico{ width:8px; height:8px; border-radius:50%; background:var(--orange); }
+  .proj-tab::after{ content:""; position:absolute; left:0; right:0; top:0; height:2px; background:var(--green); }
+  .proj-back{ display:flex; align-items:center; gap:7px; padding:0 16px; color:var(--muted); font-size:12.5px; cursor:pointer; border-right:1px solid var(--border); }
+  .proj-back:hover{ color:var(--green); }
+  .proj-scroll{ flex:1; overflow-y:auto; }
+  .proj-inner{ max-width:1080px; margin:0 auto; padding:34px 30px 80px; }
+  .proj-cover{ width:100%; aspect-ratio:16/8; object-fit:cover; border-radius:14px; border:1px solid var(--border); background:#161616; margin-bottom:26px; }
+  .proj h1{ font-family:'Geist'; font-size:clamp(28px,4.4vw,46px); font-weight:600; }
+  .proj-meta{ display:flex; flex-wrap:wrap; gap:26px; margin:18px 0 22px; padding:18px 0; border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+  .proj-meta .m .k{ color:var(--green); font-size:11px; letter-spacing:.08em; }
+  .proj-meta .m .v{ color:var(--text); font-family:'Geist'; font-size:15px; margin-top:3px; max-width:42ch; }
+  .proj-actions{ display:flex; flex-wrap:wrap; gap:12px; margin-bottom:34px; }
+  .proj h2{ font-family:var(--mono); font-size:13px; color:var(--comment); margin:30px 0 12px; font-weight:500; }
+  .proj h2::before{ content:"## "; color:#555; }
+  .proj p{ font-family:'Geist'; color:#cfcfcf; font-size:16px; margin-bottom:14px; max-width:78ch; }
+  .proj .feat{ list-style:none; display:grid; gap:10px; max-width:80ch; }
+  .proj .feat li{ position:relative; padding-left:22px; color:#cfcfcf; font-family:'Geist'; font-size:15.5px; }
+  .proj .feat li::before{ content:"▸"; position:absolute; left:0; color:var(--green); }
+  .proj .feat li b{ color:var(--text); font-weight:600; }
+  .proj .gallery{ display:grid; grid-template-columns:repeat(2,1fr); gap:14px; margin-top:6px; }
+  .proj .gallery img{ width:100%; border-radius:10px; border:1px solid var(--border); background:#161616; }
+  .proj .results{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:6px; }
+  .proj .stat{ background:var(--card); border:1px solid var(--border); border-radius:12px; padding:20px; }
+  .proj .stat .v{ font-family:var(--mono); color:var(--green); font-size:30px; font-weight:600; }
+  .proj .stat .l{ color:var(--muted); font-family:'Geist'; font-size:13px; margin-top:8px; }
+  .proj .more{ display:flex; gap:14px; flex-wrap:wrap; margin-top:14px; }
+  .proj .more a{ flex:1; min-width:240px; display:flex; gap:14px; align-items:center; background:#1d1d1d; border:1px solid var(--border); border-radius:12px; padding:14px; transition:.18s; }
+  .proj .more a:hover{ border-color:var(--green); }
+  .proj .more img{ width:64px; height:48px; object-fit:cover; border-radius:8px; filter:grayscale(1); transition:.3s; }
+  .proj .more a:hover img{ filter:grayscale(0); }
+  .proj .more .t{ color:var(--muted); font-size:11px; } .proj .more .n{ font-family:'Geist'; font-size:15px; color:var(--text); margin-top:2px; }
+  @media (max-width:760px){ .proj .results{ grid-template-columns:repeat(2,1fr); } .proj .gallery{ grid-template-columns:1fr; } }
 
   .reveal{ opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease; }
   .reveal.in{ opacity:1; transform:none; }
@@ -349,10 +387,10 @@
     <section id="work">
       <div class="line reveal">
         <div class="work">
-          <div class="card"><div class="thumb"><img src="https://framerusercontent.com/images/3NazvpHiEMrxBVnHOrCkTmn36WE.png" alt="Offensive Security Simulation" loading="lazy"></div><div class="meta"><h3>Offensive Security Simulation</h3><span class="arrow">↗</span></div></div>
-          <div class="card"><div class="thumb"><img src="https://framerusercontent.com/images/d5H03qwxB7Pcybcnpl0HTHHktIg.png" alt="Predicting Texas Agricultural Production" loading="lazy"></div><div class="meta"><h3>Predicting Texas Agricultural Production Using Climate Data</h3><span class="arrow">↗</span></div></div>
-          <div class="card"><div class="thumb"><img src="https://framerusercontent.com/images/BM9pb8VQBASoo2z7B4mPNIOQxjE.png" alt="Arithmetic Logic Unit" loading="lazy"></div><div class="meta"><h3>Arithmetic Logic Unit</h3><span class="arrow">↗</span></div></div>
-          <div class="card"><div class="thumb"><img src="https://framerusercontent.com/images/Qoz2cSSqkFk4Mu0XoUijCsDH10.png" alt="Object Oriented Chess" loading="lazy"></div><div class="meta"><h3>Object Oriented Chess</h3><span class="arrow">↗</span></div></div>
+          <a class="card" href="#/work/offensive-security-simulation" data-slug="offensive-security-simulation"><div class="thumb"><img src="https://framerusercontent.com/images/3NazvpHiEMrxBVnHOrCkTmn36WE.png" alt="Offensive Security Simulation" loading="lazy"></div><div class="meta"><h3>Offensive Security Simulation</h3><span class="arrow">↗</span></div></a>
+          <a class="card" href="#/work/machine-learning" data-slug="machine-learning"><div class="thumb"><img src="https://framerusercontent.com/images/d5H03qwxB7Pcybcnpl0HTHHktIg.png" alt="Predicting Texas Agricultural Production" loading="lazy"></div><div class="meta"><h3>Predicting Texas Agricultural Production Using Climate Data</h3><span class="arrow">↗</span></div></a>
+          <a class="card" href="#/work/arithmetic-logic-unit" data-slug="arithmetic-logic-unit"><div class="thumb"><img src="https://framerusercontent.com/images/BM9pb8VQBASoo2z7B4mPNIOQxjE.png" alt="Arithmetic Logic Unit" loading="lazy"></div><div class="meta"><h3>Arithmetic Logic Unit</h3><span class="arrow">↗</span></div></a>
+          <a class="card" href="#/work/object-oriented-chess" data-slug="object-oriented-chess"><div class="thumb"><img src="https://framerusercontent.com/images/Qoz2cSSqkFk4Mu0XoUijCsDH10.png" alt="Object Oriented Chess" loading="lazy"></div><div class="meta"><h3>Object Oriented Chess</h3><span class="arrow">↗</span></div></a>
         </div>
       </div>
     </section>
@@ -427,6 +465,15 @@
 <div class="terminal" id="terminal">
   <div class="term-head"><span class="t">TERMINAL</span><span>bash — portfolio</span><span class="x" id="termClose">✕ close (Esc)</span></div>
   <div class="term-body" id="termBody"></div>
+</div>
+
+<!-- Project detail overlay -->
+<div class="proj" id="proj">
+  <div class="proj-tabbar">
+    <div class="proj-back" id="projBack">← work.done</div>
+    <div class="proj-tab"><span class="ico"></span><span id="projTabName">project.md</span></div>
+  </div>
+  <div class="proj-scroll"><div class="proj-inner" id="projInner"></div></div>
 </div>
 
 <!-- Command palette -->
@@ -592,6 +639,157 @@ document.addEventListener('keydown',function(e){
   if(e.key==='`'&&!/INPUT|TEXTAREA/.test(document.activeElement.tagName)){e.preventDefault();toggleTerm();return;}
   if(e.key==='Escape'){closePal();}
 });
+
+/* ============================================================
+   PROJECT DETAIL PAGES  (content pulled from the Framer site)
+   ============================================================ */
+function IMG(id){return 'https://framerusercontent.com/images/'+id;}
+var PROJECTS={
+ 'offensive-security-simulation':{
+   title:'Offensive Security Simulation',
+   cover:'3NazvpHiEMrxBVnHOrCkTmn36WE.png',
+   client:'Dr. Randall S Klepetko — System Security',
+   role:'Remote Payload Deployment and Execution on Windows XP using reverse TCP.',
+   year:'2025',
+   actions:[{label:'Full Project PDF ↗',href:'https://docs.google.com/document/d/1642eqmdOAEaca2r42f5hXIK4hWAY2qUXXv8sEQJI5Cs/edit?usp=sharing',primary:true}],
+   sections:[
+     {h:'Project Overview',p:['This is a targeted security research project by team "Computer Insecurity" demonstrating three distinct vulnerability exploitation techniques. The project focused on creating proof-of-concept implementations showcasing remote payload deployment, phishing attacks, and hardware-based keylogging. Each team member independently researched, executed, and documented their chosen exploit to understand offensive security techniques and emphasize the importance of cybersecurity awareness.']},
+     {h:'Our Approach',p:['We follow a hands-on, practical research methodology where each team member takes ownership of a specific vulnerability. Every exploit is approached with thorough research, careful documentation, and controlled testing. We begin by understanding the attack vector, setting up isolated test environments, and implementing step-by-step execution. Through tools like Kali Linux, Social Engineering Toolkit, and custom hardware solutions, we demonstrate real-world security vulnerabilities in educational contexts.']}
+   ],
+   features:[
+     '<b>Remote Payload Deployment</b> — Reverse TCP implementation using Metasploit for persistent Windows XP access with MEMZ trojan demonstration',
+     '<b>Email Phishing Attack</b> — Fake LinkedIn login pages created with Zphisher and ALHacking tools to capture credentials',
+     '<b>Hardware Keylogger</b> — ESP32-S3 microcontroller configured as USB HID device for automated PowerShell script injection',
+     '<b>Comprehensive Documentation</b> — Detailed step-by-step guides with screenshots for educational replication',
+     '<b>Multi-Vector Analysis</b> — Coverage of network, social engineering, and physical attack surfaces'
+   ],
+   gallery:['TjG9IXYo6etTapEXTAaKRSkgQs.png','u7COZpEwal9CMYRQ67j7478QA.png','byXi0EOACbyfRSMbtB9kyymBIco.png','C9bb6FhpzaypIaMVYJaP9hsLZ4A.png'],
+   results:[{v:'3',l:'Attack vectors demonstrated by team Computer Insecurity'},{v:'100%',l:'Persistent access via startup-folder payload placement'},{v:'<5s',l:'ESP32 keylogger injection time when plugged into USB'},{v:'2-stage',l:'Phishing attack (email + fake LinkedIn page)'}]
+ },
+ 'machine-learning':{
+   title:'Predicting Texas Agricultural Production Using Climate Data',
+   cover:'d5H03qwxB7Pcybcnpl0HTHHktIg.png',
+   client:'Prof. Dr. Jelena Tešić (CS4347)',
+   role:'Baseline model, evaluation, hyperparameter tuning',
+   year:'2025',
+   actions:[{label:'Full GitHub Link ↗',href:'https://github.com/Fall-2025-CS4347-SDS/Fall-2025-CS4347-Project',primary:true},{label:'Project PowerPoint ↗',href:'https://1drv.ms/p/c/1417703d47cd4456/IQA0vW7TQx9fTZ-IHio6RqnUARQC1880Ely24WMINnudVLY?e=JFOSac'}],
+   sections:[
+     {h:'Project Overview',p:['This project explores how climate conditions influence agricultural outcomes across Texas counties using machine learning. We combined large scale USDA agricultural records with NOAA climate data from 2000 to 2023 to analyze yield, production, and harvested area trends. Instead of optimizing for maximum prediction accuracy, the project emphasizes interpretability by identifying which climate variables most strongly affect agricultural performance and under what conditions those effects are most pronounced.']},
+     {h:'Motivation',p:['Texas agriculture generates over $100 billion annually and is highly sensitive to climate variability. Extreme drought years such as 2011, which caused an estimated $7.6 billion in agricultural losses, demonstrate how temperature and precipitation shocks can translate directly into major economic impact. Even small yield changes of 10 to 20 percent across major crops like corn, wheat, and cotton can result in hundreds of millions to billions of dollars gained or lost in a single season. This project aims to quantify which climate factors matter most and when, supporting better risk assessment and climate aware agricultural planning.']},
+     {h:'Our Approach',p:['We merged over 398,000 USDA county level agricultural records with monthly NOAA climate measurements and engineered biologically meaningful growing season features. A major challenge was that agricultural statistics span different units such as bushels, acres, and dollars. To address this, we normalized targets within crop and statistic groups to remove scale bias and ensure the model learned climate relationships rather than unit magnitude.','Tree based machine learning models were selected for their ability to capture nonlinear patterns and provide interpretable feature importance. We trained separate models by measurement type and crop, which revealed that climate effects vary significantly across crops and become strongest during extreme conditions such as drought years.']}
+   ],
+   features:[
+     'Integrated USDA and NOAA datasets spanning 2000 to 2023',
+     'Dataset scale of over <b>398,000 records</b>, <b>254 Texas counties</b>, and <b>165 crop types</b>',
+     'Monthly climate variables with engineered growing season aggregates',
+     'Z score normalization to prevent unit scale leakage',
+     'Tree based models including Decision Trees, Random Forests, and Gradient Boosting',
+     'Crop specific modeling with strong performance gains such as corn achieving <b>R² = 0.667</b>',
+     'Drought focused analysis showing climate signals are strongest during high risk years',
+     'Feature importance analysis showing <b>temperature is 2.7× more influential than precipitation</b>'
+   ],
+   gallery:['khNgmgqxpZC5ZkhHPiLdhBZ9lk.jpg','ELj9ueDr1kbAgbuH4AHSsYQE4Ug.png','LaryuxGzOBfDL5gMlHQq9L8EQ.png','i6rSeBTHztAFpgek3l4mjZHZ3eo.png'],
+   results:[{v:'398,000+',l:'USDA records analyzed'},{v:'254',l:'Texas counties analyzed'},{v:'2.7×',l:'Temperature vs precipitation influence'},{v:'0.667',l:'Corn yield model R²'}]
+ },
+ 'arithmetic-logic-unit':{
+   title:'Arithmetic Logic Unit',
+   cover:'BM9pb8VQBASoo2z7B4mPNIOQxjE.png',
+   client:'Dr. Randall S Klepetko — Computer Architecture',
+   role:'Program, Test, and Document A Virtual Arithmetic Logic Unit',
+   year:'2024',
+   actions:[{label:'Full LaTeX PDF ↗',href:'https://drive.google.com/file/d/18FOUFce0rbAyJS3iL6Cwb-zMCD59fntA/view?usp=sharing',primary:true}],
+   sections:[
+     {h:'Project Overview',p:['This project involved designing and implementing a fully functional 4-bit Arithmetic Logic Unit (ALU) using Verilog for a computer architecture course. The ALU performs a wide range of logical and arithmetic operations on two 4-bit inputs, including bitwise logic, shifting, addition, subtraction, multiplication, and division. The design emphasizes modularity, correctness, and reliability, with all functionality validated through simulation and waveform analysis.']},
+     {h:'Motivation',p:['The Arithmetic Logic Unit is a foundational component of every processor, responsible for executing core computations at the hardware level. Understanding how an ALU is built provides critical insight into how high-level software instructions are translated into physical operations. This project was motivated by the goal of gaining hands-on experience with digital logic design, hardware description languages, and low-level computation, bridging the gap between abstract instruction sets and real circuit behavior.']},
+     {h:'Our Approach',p:['We implemented the ALU entirely in Verilog, integrating previously developed logic modules into a single combinational design controlled by a 4-bit opcode. Temporary registers were used to safely handle carry bits, extended multiplication results, and division remainders. To ensure correctness, we created a comprehensive testbench that exercised every supported operation and generated simulation waveforms using GTKWave.','Special care was taken to handle edge cases such as overflow, borrow conditions, and division by zero. The design uses a structured case statement to map opcodes to operations, ensuring predictable and robust behavior under all valid inputs.']}
+   ],
+   features:[
+     'Fully functional 4-bit ALU implemented in Verilog',
+     'Supports AND, NAND, OR, NOR, XOR, XNOR, NOT, left shift, and right shift',
+     'Supports addition, subtraction, multiplication, and division',
+     'Carry-in and carry-out handling for arithmetic operations',
+     'Extended output register for multiplication and division remainder',
+     'Combinational logic design with immediate input response',
+     'Comprehensive Verilog testbench with automated waveform generation',
+     'Simulation and debugging performed using <b>GTKWave</b>'
+   ],
+   gallery:['BFSkR2pFx0eRCbmmyD8AxtBGZLY.png','aizvA4arj7D6odSJY7e1XdEJAZU.png','1UnUy0GRMWem52993R4tFA8EiE.jpg','jxt8GVDG7Uz4zN1EhWfIRCLOyg.png'],
+   results:[{v:'13',l:'Operations implemented'},{v:'100%',l:'Opcode coverage tested'},{v:'4-bit',l:'ALU data width'},{v:'8-bit',l:'Max internal result width'}]
+ },
+ 'object-oriented-chess':{
+   title:'Object Oriented Chess',
+   cover:'Qoz2cSSqkFk4Mu0XoUijCsDH10.png',
+   client:'Doctor Xiaomin Li (CS 3354-003)',
+   role:'Engineer Object Oriented Chess Game',
+   year:'2024',
+   actions:[{label:'GitHub Link ↗',href:'https://git.txstate.edu/Johann/Chess',primary:true}],
+   sections:[
+     {h:'Project Overview',p:['We built a complete Java Chess game with a clean, responsive GUI layered over a tested console engine. The goal: fast, intuitive gameplay with accurate rule enforcement, clear visuals, and a frictionless two-player experience.']},
+     {h:'Our Approach',p:['We designed the engine and UI as separate systems. Core logic—board state, piece movement, turn flow—was implemented first, then connected to a minimal, responsive GUI. Each phase refined structure, reduced noise, and strengthened reliability.']}
+   ],
+   features:[
+     'Legal-move validation','Capture logic','Check / checkmate detection','Turn-based two-player flow','Responsive 8×8 GUI with mouse interaction'
+   ],
+   gallery:['THpC4rF2TpQrDDCvXAd5WWUT34.png','JFjLL5a1gB8MmiKBRMfBI2HnmXo.png','MOyGuCIE1eHffvxP3kidupaFU4.png'],
+   results:[{v:'64',l:'Board-state tiles scanned per turn to validate moves'},{v:'6',l:'Unique piece classes (Pawn, Rook, Knight, Bishop, Queen, King)'},{v:'32',l:'Piece objects instantiated at game start (16 + 16)'},{v:'1,000+',l:'Legal-move calculations per match'}]
+ }
+};
+var ORDER=['offensive-security-simulation','machine-learning','arithmetic-logic-unit','object-oriented-chess'];
+
+var projEl=document.getElementById('proj'),projInner=document.getElementById('projInner'),projTabName=document.getElementById('projTabName');
+function renderProject(slug){
+  var d=PROJECTS[slug]; if(!d) return false;
+  projTabName.textContent=slug+'.md';
+  var h='';
+  h+='<img class="proj-cover" src="'+IMG(d.cover)+'" alt="'+d.title+'">';
+  h+='<h1>'+d.title+'</h1>';
+  h+='<div class="proj-meta">'
+    +'<div class="m"><div class="k">// CLIENT</div><div class="v">'+d.client+'</div></div>'
+    +'<div class="m"><div class="k">// ROLE</div><div class="v">'+d.role+'</div></div>'
+    +'<div class="m"><div class="k">// YEAR</div><div class="v">'+d.year+'</div></div></div>';
+  h+='<div class="proj-actions">'+d.actions.map(function(a){return '<a class="btn '+(a.primary?'primary':'')+'" href="'+a.href+'" target="_blank" rel="noopener">'+a.label+'</a>';}).join('')+'</div>';
+  d.sections.forEach(function(s){ h+='<h2>'+s.h+'</h2>'+s.p.map(function(p){return '<p>'+p+'</p>';}).join(''); });
+  h+='<h2>Key Features</h2><ul class="feat">'+d.features.map(function(f){return '<li>'+f+'</li>';}).join('')+'</ul>';
+  if(d.gallery&&d.gallery.length){ h+='<h2>Gallery</h2><div class="gallery">'+d.gallery.map(function(g){return '<img loading="lazy" src="'+IMG(g)+'" alt="">';}).join('')+'</div>'; }
+  h+='<h2>Results</h2><div class="results">'+d.results.map(function(r){return '<div class="stat"><div class="v" data-count="'+r.v+'">'+r.v+'</div><div class="l">'+r.l+'</div></div>';}).join('')+'</div>';
+  // more works
+  var others=ORDER.filter(function(s){return s!==slug;}).slice(0,2);
+  h+='<h2>More Works</h2><div class="more">'+others.map(function(s){var o=PROJECTS[s];return '<a href="#/work/'+s+'"><img src="'+IMG(o.cover)+'" alt=""><div><div class="t">// next project</div><div class="n">'+o.title+'</div></div></a>';}).join('')+'</div>';
+  projInner.innerHTML=h;
+  animateCounters();
+  return true;
+}
+function animateCounters(){
+  projInner.querySelectorAll('.v[data-count]').forEach(function(el){
+    var raw=el.getAttribute('data-count');
+    var m=raw.replace(/,/g,'').match(/^(\d+)(\+)?$/);
+    if(!m){ el.textContent=raw; return; }
+    var end=parseInt(m[1],10),suf=m[2]||'',t0=null,dur=900;
+    function step(ts){ if(!t0)t0=ts; var p=Math.min((ts-t0)/dur,1); var val=Math.floor(p*end);
+      el.textContent=val.toLocaleString()+(p>=1?suf:''); if(p<1)requestAnimationFrame(step); }
+    requestAnimationFrame(step);
+  });
+}
+function openProject(slug){
+  if(!renderProject(slug)) return;
+  projEl.classList.add('open');
+  document.querySelector('.proj-scroll').scrollTop=0;
+  document.body.style.overflow='hidden';
+}
+function closeProject(){
+  projEl.classList.remove('open'); document.body.style.overflow='';
+  if(/^#\/work\//.test(location.hash)) history.replaceState(null,'','#work');
+}
+document.getElementById('projBack').addEventListener('click',function(){ location.hash='#work'; });
+
+/* hash routing: #/work/<slug> opens a project */
+function routeHash(){
+  var m=location.hash.match(/^#\/work\/([a-z0-9\-]+)/);
+  if(m && PROJECTS[m[1]]){ openProject(m[1]); }
+  else { if(projEl.classList.contains('open')) closeProject(); }
+}
+window.addEventListener('hashchange',routeHash);
+routeHash();
 </script>
 </body>
 </html>
