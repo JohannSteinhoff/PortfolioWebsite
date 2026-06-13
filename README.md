@@ -1,5 +1,7 @@
 # Johann Steinhoff — Portfolio
 
+**Live site:** https://johannsteinhoff.github.io/PortfolioWebsite/
+
 A single-file personal portfolio site (HTML + CSS + JavaScript), rebuilt from the
 original Framer site so it can be hosted and edited independently.
 
