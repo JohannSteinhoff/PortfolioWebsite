@@ -43,8 +43,15 @@
   .lights .r{ background:#ff5f57; } .lights .y{ background:#febc2e; } .lights .g{ background:#28c840; }
   .title{ flex:1; text-align:center; color:var(--muted); font-size:12.5px; }
   .title b{ color:var(--text); font-weight:500; } .title .accent{ color:var(--green); }
-  .win-actions{ display:flex; gap:14px; color:var(--muted); font-size:12px; }
+  .win-actions{ display:flex; align-items:center; gap:14px; color:var(--muted); font-size:12px; }
   .win-actions a{ cursor:pointer; } .win-actions a:hover{ color:var(--green); }
+
+  /* ---------- Apple-style theme toggle ---------- */
+  .theme-toggle{ position:relative; flex:none; width:40px; height:23px; padding:0; border:none; border-radius:23px; background:#34c759; cursor:pointer; transition:background .3s ease; -webkit-tap-highlight-color:transparent; }
+  .theme-toggle::after{ content:""; position:absolute; top:2px; left:2px; width:19px; height:19px; border-radius:50%; background:#fff; box-shadow:0 1px 3px rgba(0,0,0,.35); transition:transform .3s cubic-bezier(.3,1.3,.5,1); transform:translateX(17px); }
+  .theme-toggle:focus-visible{ outline:2px solid var(--blue); outline-offset:2px; }
+  body.light .theme-toggle{ background:#cfccc1; }
+  body.light .theme-toggle::after{ transform:translateX(0); }
 
   /* ---------- Tab bar ---------- */
   .tabs{ position:sticky; top:var(--title-h); z-index:55; height:var(--tab-h); background:var(--panel); border-bottom:1px solid var(--border); display:flex; align-items:stretch; overflow-x:auto; scrollbar-width:none; }
@@ -135,7 +142,7 @@
   .socials a:hover{ border-color:var(--green); transform:translateY(-2px); }
   .socials img{ width:18px; height:18px; }
 
-  .work{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+  .work{ display:grid; grid-template-columns:repeat(auto-fill, minmax(400px,1fr)); gap:16px; }
   .work .card{ display:block; background:#1d1d1d; border:1px solid var(--border); border-radius:12px; overflow:hidden; transition:.22s; cursor:pointer; }
   .work .card:hover{ transform:translateY(-4px); border-color:var(--green); }
   .work .thumb{ position:relative; aspect-ratio:1/1; overflow:hidden; background:#0a0c0e; }
@@ -153,6 +160,10 @@
   .work .thumb.shot{ background:#f8f7ec; }
   .work .thumb.shot img{ filter:grayscale(1); }
   .work .card:hover .thumb.shot img{ filter:grayscale(0); transform:scale(1.03); }
+  .work .card:hover .thumb .single{ transform:scale(1.03); }
+  /* live projects — subtle light-blue backlight */
+  .work .card.live-proj{ border-color:rgba(125,185,255,.35); box-shadow:0 0 0 1px rgba(125,185,255,.12), 0 0 26px rgba(125,185,255,.20); }
+  .work .card.live-proj:hover{ border-color:rgba(150,200,255,.6); box-shadow:0 0 0 1px rgba(125,185,255,.25), 0 0 40px rgba(125,185,255,.34); }
 
   .stack{ display:grid; grid-template-columns:repeat(6,1fr); gap:14px; }
   .chip{ position:relative; background:#1d1d1d; border:1px solid var(--border); border-radius:14px; padding:20px 12px; display:flex; flex-direction:column; align-items:center; gap:11px; transition:.18s; text-align:center; }
@@ -252,19 +263,54 @@
 
   @media (max-width:1000px){
     .sidebar{ display:none; }
-    .hero-grid,.acad,.about,.work,.blog{ grid-template-columns:1fr; }
+    .hero-grid,.acad,.about,.blog{ grid-template-columns:1fr; }
     .stack{ grid-template-columns:repeat(4,1fr); }
   }
   @media (max-width:640px){
     .line{ padding:0 16px 0 52px; } .editor::before{ left:40px; } .gutter{ width:30px; font-size:11px; } .indent{ padding-left:64px; }
+    .work{ grid-template-columns:repeat(auto-fill, minmax(280px,1fr)); }
     .stack{ grid-template-columns:repeat(3,1fr); }
     .tl .item{ grid-template-columns:1fr; gap:4px; }
-    .title .path,.win-actions{ display:none; }
+    .title .path{ display:none; }
+    .win-actions a{ display:none; }
     .hide-sm{ display:none; }
   }
+
+  /* ===========================================================
+     LIGHT THEME
+     =========================================================== */
+  body{ transition:background .3s ease, color .3s ease; }
+  body.light{
+    --bg:#f4f2ec; --panel:#e9e6dd; --panel-2:#efece4; --card:#ffffff;
+    --border:#d8d4c7; --gutter:#b6b2a4; --text:#1f1f1f; --muted:#6b675e;
+    --comment:#4e8a3f; --green:#179a2c; --blue:#1f74cf; --orange:#cf6a00;
+  }
+  body.light{ background:var(--bg); color:var(--text); }
+  body.light ::selection{ background:rgba(23,154,44,.22); }
+  body.light .punct{ color:#9a968a; }
+  body.light .sb-item::before,
+  body.light .foot .links a::before,
+  body.light .proj h2::before{ color:#b6b2a4; }
+  body.light .btn,
+  body.light .acad .col,
+  body.light .socials a,
+  body.light .work .card,
+  body.light .chip,
+  body.light .blog,
+  body.light .proj .more a{ background:#ffffff; }
+  body.light .btn.primary{ background:var(--green); color:#fff; }
+  body.light .btn.primary:hover{ color:#fff; }
+  body.light .proj p,
+  body.light .proj .feat li{ color:#3a3a3a; }
+  body.light .palette{ background:#ffffff; border-color:var(--border); box-shadow:0 24px 70px rgba(0,0,0,.18); }
+  body.light .palette input{ background:#f4f2ec; }
+  body.light .palette li .k{ color:#a09c90; }
+  body.light .statusbar a,
+  body.light .statusbar{ color:#062a0c; }
 </style>
 </head>
 <body>
+<script>try{if(localStorage.getItem('theme')==='light')document.body.classList.add('light');}catch(e){}</script>
 
 <div class="titlebar">
   <div class="lights"><i class="r"></i><i class="y"></i><i class="g"></i></div>
@@ -273,6 +319,7 @@
     <a data-cmd="palette">⌘K</a>
     <a data-cmd="terminal">terminal</a>
     <a href="mailto:johannxsteinhoff@gmail.com">message</a>
+    <button class="theme-toggle" id="themeToggle" role="switch" aria-checked="true" aria-label="Toggle dark mode" title="Toggle dark mode"></button>
   </div>
 </div>
 
@@ -398,7 +445,7 @@
         <div class="socials">
           <span class="lbl">Follow me:</span>
           <a href="https://www.linkedin.com/in/johann-steinhoff-b95b962a7" target="_blank" rel="noopener" title="LinkedIn"><img src="https://framerusercontent.com/images/qI1GYHcIOTyDnqFSqjYz6j4qkc.png" alt="LinkedIn"></a>
-          <a href="https://git.txstate.edu/Johann" target="_blank" rel="noopener" title="Git"><img src="https://framerusercontent.com/images/lWmIFEz2sSvGpcyC4nAhQCEvFVQ.png" alt="Git"></a>
+          <a href="https://github.com/JohannSteinhoff" target="_blank" rel="noopener" title="GitHub"><img src="https://framerusercontent.com/images/lWmIFEz2sSvGpcyC4nAhQCEvFVQ.png" alt="GitHub"></a>
         </div>
       </div>
     </section>
@@ -409,10 +456,10 @@
       <div class="line reveal"><span class="sec-title">Work &amp; <span class="em">projects</span></span></div>
       <div class="line reveal">
         <div class="work">
-          <a class="card" href="https://gettender.web.app/" target="_blank" rel="noopener"><div class="thumb shot"><img src="images/tender.png?v=1" alt="Tender app" loading="lazy"></div><div class="meta"><h3>Tender</h3><span class="arrow">↗</span></div></a>
+          <a class="card live-proj" href="https://gettender.web.app/" target="_blank" rel="noopener"><div class="thumb shot"><img src="images/tender.png?v=1" alt="Tender app" loading="lazy"></div><div class="meta"><h3>Tender</h3><span class="arrow">↗</span></div></a>
           <a class="card" href="#/work/offensive-security-simulation" data-slug="offensive-security-simulation"><div class="thumb"><img class="bw" src="https://framerusercontent.com/images/3NazvpHiEMrxBVnHOrCkTmn36WE.png" alt="Offensive Security Simulation" loading="lazy"><img class="color" src="images/offensive-security-simulation-color.png?v=1" alt="" loading="lazy" onerror="this.remove()"></div><div class="meta"><h3>Offensive Security Simulation</h3><span class="arrow">↗</span></div></a>
           <a class="card" href="#/work/machine-learning" data-slug="machine-learning"><div class="thumb"><img class="bw" src="https://framerusercontent.com/images/d5H03qwxB7Pcybcnpl0HTHHktIg.png" alt="Predicting Texas Agricultural Production" loading="lazy"><img class="color" src="images/machine-learning-color.png?v=1" alt="" loading="lazy" onerror="this.remove()"></div><div class="meta"><h3>Predicting Texas Agricultural Production Using Climate Data</h3><span class="arrow">↗</span></div></a>
-          <a class="card" href="https://johannsteinhoff.github.io/JohannWebsitesforhire/" target="_blank" rel="noopener"><div class="thumb live"><span class="badge">● LIVE</span><span class="url">websites for hire</span></div><div class="meta"><h3>Websites for Hire</h3><span class="arrow">↗</span></div></a>
+          <a class="card live-proj" href="https://johannsteinhoff.github.io/JohannWebsitesforhire/" target="_blank" rel="noopener"><div class="thumb"><img class="single" src="images/websites-for-hire.png?v=1" alt="Websites for Hire" loading="lazy"></div><div class="meta"><h3>Websites for Hire</h3><span class="arrow">↗</span></div></a>
           <a class="card" href="#/work/arithmetic-logic-unit" data-slug="arithmetic-logic-unit"><div class="thumb"><img class="bw" src="https://framerusercontent.com/images/BM9pb8VQBASoo2z7B4mPNIOQxjE.png" alt="Arithmetic Logic Unit" loading="lazy"><img class="color" src="images/arithmetic-logic-unit-color.png?v=1" alt="" loading="lazy" onerror="this.remove()"></div><div class="meta"><h3>Arithmetic Logic Unit</h3><span class="arrow">↗</span></div></a>
           <a class="card" href="#/work/object-oriented-chess" data-slug="object-oriented-chess"><div class="thumb"><img class="bw" src="https://framerusercontent.com/images/Qoz2cSSqkFk4Mu0XoUijCsDH10.png" alt="Object Oriented Chess" loading="lazy"><img class="color" src="images/object-oriented-chess-color.png?v=1" alt="" loading="lazy" onerror="this.remove()"></div><div class="meta"><h3>Object Oriented Chess</h3><span class="arrow">↗</span></div></a>
         </div>
@@ -466,7 +513,7 @@
             <div class="info">johannxsteinhoff@gmail.com · +1 (832)-292-2919</div>
             <div class="socials" style="margin-top:18px">
               <a href="https://www.linkedin.com/in/johann-steinhoff-b95b962a7" target="_blank" rel="noopener" title="LinkedIn"><img src="https://framerusercontent.com/images/qI1GYHcIOTyDnqFSqjYz6j4qkc.png" alt="LinkedIn"></a>
-              <a href="https://git.txstate.edu/Johann" target="_blank" rel="noopener" title="Git"><img src="https://framerusercontent.com/images/lWmIFEz2sSvGpcyC4nAhQCEvFVQ.png" alt="Git"></a>
+              <a href="https://github.com/JohannSteinhoff" target="_blank" rel="noopener" title="GitHub"><img src="https://framerusercontent.com/images/lWmIFEz2sSvGpcyC4nAhQCEvFVQ.png" alt="GitHub"></a>
             </div>
           </div>
           <div>
@@ -587,7 +634,7 @@ var CMDS=[
   {ic:'✉',label:'Email Johann',run:function(){location.href='mailto:johannxsteinhoff@gmail.com';}},
   {ic:'⧉',label:'Copy email address',run:function(){navigator.clipboard&&navigator.clipboard.writeText('johannxsteinhoff@gmail.com');}},
   {ic:'in',label:'Open LinkedIn',run:function(){window.open('https://www.linkedin.com/in/johann-steinhoff-b95b962a7','_blank');}},
-  {ic:'⎇',label:'Open Git (TXST)',run:function(){window.open('https://git.txstate.edu/Johann','_blank');}},
+  {ic:'⎇',label:'Open GitHub',run:function(){window.open('https://github.com/JohannSteinhoff','_blank');}},
   {ic:'›_',label:'Toggle integrated terminal',run:function(){toggleTerm();}}
 ];
 var palBack=document.getElementById('palBack'),palInput=document.getElementById('palInput'),palList=document.getElementById('palList'),palSel=0,palFiltered=CMDS;
@@ -641,7 +688,7 @@ var TERM={
   academic:function(){goTo('academic');return 'opening academic experience…';},
   contact:function(){return 'email : <span class="bl">johannxsteinhoff@gmail.com</span>\nphone : +1 (832)-292-2919\nloc   : San Marcos, TX USA';},
   cv:function(){window.open('https://drive.google.com/file/d/1xyUFAcntqcEYi382X8YwD-rgUcbnxQRZ/view?usp=sharing','_blank');return 'opening CV in a new tab…';},
-  social:function(){return 'linkedin : linkedin.com/in/johann-steinhoff-b95b962a7\ngit      : git.txstate.edu/Johann';},
+  social:function(){return 'linkedin : linkedin.com/in/johann-steinhoff-b95b962a7\ngithub   : github.com/JohannSteinhoff';},
   date:function(){return new Intl.DateTimeFormat('en-US',{dateStyle:'full',timeStyle:'short',timeZone:'America/Chicago'}).format(new Date())+' (Central)';},
   sudo:function(){return '<span class="er">nice try.</span> permission denied 😄';},
   clear:function(){termBody.innerHTML='';termBody.dataset.init='1';return null;}
@@ -653,6 +700,19 @@ function termRun(raw){
   if(TERM[cmd]){var out=TERM[cmd]();if(out!==null)termPrint(out);}
   else termPrint('<span class="er">command not found: '+cmd+'</span> — type <span class="bl">help</span>');
 }
+
+/* ---------- theme toggle ---------- */
+(function(){
+  var tg=document.getElementById('themeToggle');
+  if(!tg)return;
+  function sync(){ tg.setAttribute('aria-checked', String(!document.body.classList.contains('light'))); }
+  sync();
+  tg.addEventListener('click',function(){
+    var light=document.body.classList.toggle('light');
+    try{localStorage.setItem('theme', light?'light':'dark');}catch(e){}
+    sync();
+  });
+})();
 
 /* ---------- global shortcuts & triggers ---------- */
 document.querySelectorAll('[data-cmd]').forEach(function(el){
