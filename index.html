@@ -173,8 +173,9 @@
   .chip .cert{ position:absolute; top:8px; right:8px; font-size:8px; color:var(--green); border:1px solid rgba(90,238,108,.4); border-radius:5px; padding:2px 4px; }
 
   .blog{ display:grid; grid-template-columns:1.4fr 1fr; overflow:hidden; background:#1d1d1d; border:1px solid var(--border); border-radius:12px; }
-  .blog .thumb{ aspect-ratio:16/9; background:#161616; }
-  .blog .thumb img{ width:100%; height:100%; object-fit:cover; }
+  .blog .thumb{ display:block; aspect-ratio:16/9; background:#161616; overflow:hidden; cursor:pointer; }
+  .blog .thumb img{ width:100%; height:100%; object-fit:cover; transition:transform .4s ease; }
+  .blog .thumb:hover img{ transform:scale(1.03); }
   .blog .body{ padding:28px; display:flex; flex-direction:column; justify-content:center; }
   .blog .date{ color:var(--orange); font-family:var(--mono); font-size:13px; }
   .blog h3{ font-family:'Geist'; font-size:24px; font-weight:600; margin:8px 0 18px; }
@@ -258,6 +259,22 @@
   .proj .more .t{ color:var(--muted); font-size:11px; } .proj .more .n{ font-family:'Geist'; font-size:15px; color:var(--text); margin-top:2px; }
   @media (max-width:760px){ .proj .results{ grid-template-columns:repeat(2,1fr); } .proj .gallery{ grid-template-columns:1fr; } }
 
+  /* ---------- Blog slideshow ---------- */
+  .slides{ position:fixed; inset:0; z-index:90; background:rgba(8,8,8,.95); display:none; flex-direction:column; }
+  .slides.open{ display:flex; }
+  .slides-head{ height:var(--tab-h); flex:0 0 auto; display:flex; align-items:center; justify-content:space-between; padding:0 16px; border-bottom:1px solid var(--border); background:var(--panel); }
+  .slides-head .t{ display:flex; align-items:center; gap:8px; font-size:13px; color:var(--text); }
+  .slides-head .t .ico{ width:8px; height:8px; border-radius:50%; background:var(--orange); }
+  .slides-head .x{ color:var(--muted); font-size:12.5px; cursor:pointer; }
+  .slides-head .x:hover{ color:var(--green); }
+  .slides-stage{ flex:1; display:flex; align-items:center; justify-content:center; gap:18px; padding:24px; min-height:0; }
+  .slides-stage img{ max-width:min(1180px,100%); max-height:100%; object-fit:contain; border-radius:10px; border:1px solid var(--border); box-shadow:0 18px 60px rgba(0,0,0,.5); background:#fff; }
+  .slides-nav{ flex:0 0 auto; width:48px; height:48px; border-radius:50%; border:1px solid var(--border); background:#1d1d1d; color:var(--text); font-size:22px; line-height:1; display:grid; place-items:center; cursor:pointer; transition:.18s; user-select:none; }
+  .slides-nav:hover{ border-color:var(--green); color:var(--green); transform:scale(1.06); }
+  .slides-foot{ flex:0 0 auto; display:flex; align-items:center; justify-content:center; gap:16px; padding:13px; border-top:1px solid var(--border); background:var(--panel); font-family:var(--mono); font-size:12.5px; color:var(--muted); }
+  .slides-foot .count b{ color:var(--green); }
+  @media (max-width:760px){ .slides-stage{ padding:10px; gap:8px; } .slides-nav{ width:38px; height:38px; font-size:18px; } }
+
   .reveal{ opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease; }
   .reveal.in{ opacity:1; transform:none; }
 
@@ -336,11 +353,11 @@
     <a class="sb-item" href="#hero" data-sec="hero">hero</a>
     <a class="sb-item" href="#academic" data-sec="academic">academic</a>
     <a class="sb-item" href="#about" data-sec="about">about</a>
+    <a class="sb-item" href="#extras" data-sec="extras">timeline</a>
     <div class="sb-folder"><span class="car">▾</span><span class="ico g2"></span>work.done</div>
     <a class="sb-item" href="#work" data-sec="work">projects</a>
     <a class="sb-item" href="#stack" data-sec="stack">tech-stack</a>
     <div class="sb-folder"><span class="car">▾</span><span class="ico g2"></span>extras.ynot</div>
-    <a class="sb-item" href="#extras" data-sec="extras">timeline</a>
     <a class="sb-item" href="#blog" data-sec="blog">blog</a>
     <a class="sb-item" href="#contact" data-sec="contact">contact</a>
   </aside>
@@ -361,7 +378,7 @@
                 <div class="role">Computer Science Graduate</div>
                 <p class="lead">I'm excited to be a human who will help the world using technology.</p>
                 <div class="btn-row">
-                  <a class="btn primary" href="https://drive.google.com/file/d/1xyUFAcntqcEYi382X8YwD-rgUcbnxQRZ/view?usp=sharing" target="_blank" rel="noopener">Download CV ↓</a>
+                  <a class="btn primary" href="files/06132026%20Resume.pdf" download target="_blank" rel="noopener">Download CV ↓</a>
                   <a class="btn" href="mailto:johannxsteinhoff@gmail.com">Shoot me a message</a>
                   <a class="btn" href="#contact">Work with me</a>
                 </div>
@@ -426,7 +443,7 @@
           <div class="copy">
             <h2 class="sec-title">Inside My <span class="em">Creative Core</span></h2>
             <p>With little tech in the house, I learned to build what I couldn't buy—starting with a DIY PC that kicked off my love for computing. I experimented with networks and micro-controllers (esp32, Digispark), pulled a few harmless pranks, and discovered how systems break—and how to design them better. That mix of curiosity and persistence now fuels my work: clean interfaces, robust systems, and creative solutions that help people.</p>
-            <a class="btn primary" href="https://drive.google.com/file/d/1xyUFAcntqcEYi382X8YwD-rgUcbnxQRZ/view?usp=sharing" target="_blank" rel="noopener">Download CV ↓</a>
+            <a class="btn primary" href="files/06132026%20Resume.pdf" download target="_blank" rel="noopener">Download CV ↓</a>
           </div>
         </div>
       </div>
@@ -493,11 +510,11 @@
       <div class="line reveal"><span class="sec-title">From My <span class="em">Desk</span></span></div>
       <div class="line reveal">
         <div class="blog">
-          <div class="thumb"><img src="https://framerusercontent.com/images/x9jMlxBxkY2hH8OQ0eqsgREzl68.png" alt="FPV Drones" loading="lazy"></div>
+          <a class="thumb" href="#/blog/fpv-drones" aria-label="Open FPV Drones slideshow"><img src="images/drones/Slide1.jpg" alt="FPV Drones: How they Work" loading="lazy"></a>
           <div class="body">
-            <div class="date">Oct 10, 2025</div>
+            <div class="date">Oct 15, 2025</div>
             <h3>FPV Drones: How they Work</h3>
-            <a class="btn primary" href="#blog" style="align-self:flex-start">Read full blog →</a>
+            <a class="btn primary" href="#/blog/fpv-drones" style="align-self:flex-start">Read full blog →</a>
           </div>
         </div>
       </div>
@@ -545,6 +562,24 @@
     <div class="proj-tab"><span class="ico"></span><span id="projTabName">project.md</span></div>
   </div>
   <div class="proj-scroll"><div class="proj-inner" id="projInner"></div></div>
+</div>
+
+<!-- Blog slideshow overlay -->
+<div class="slides" id="slides">
+  <div class="slides-head">
+    <span class="t"><span class="ico"></span><span id="slidesTitle">slideshow</span></span>
+    <span class="x" id="slidesClose">✕ close (Esc)</span>
+  </div>
+  <div class="slides-stage">
+    <div class="slides-nav" id="slidesPrev" aria-label="Previous slide">‹</div>
+    <img id="slidesImg" src="" alt="">
+    <div class="slides-nav" id="slidesNext" aria-label="Next slide">›</div>
+  </div>
+  <div class="slides-foot">
+    <span id="slidesCaption">FPV Drones: How they Work</span>
+    <span class="count"><b id="slidesIdx">1</b> / <span id="slidesTot">25</span></span>
+    <span class="hide-sm">← → to navigate</span>
+  </div>
 </div>
 
 <!-- Command palette -->
@@ -599,7 +634,7 @@ function goTo(id){var t=document.getElementById(id);if(t)t.scrollIntoView({behav
 document.querySelectorAll('.tab').forEach(function(t){t.addEventListener('click',function(){goTo(t.dataset.target.slice(1));});});
 
 /* ---------- scrollspy: active tab + sidebar item + Ln,Col flavor ---------- */
-var tabMap={hero:0,academic:0,about:0,work:1,stack:1,extras:2,blog:2,contact:2};
+var tabMap={hero:0,academic:0,about:0,extras:0,work:1,stack:1,blog:2,contact:2};
 var secs=['hero','academic','about','extras','work','stack','blog','contact'];
 var spy=new IntersectionObserver(function(es){
   es.forEach(function(e){ if(e.isIntersecting){ setActive(e.target.id); } });
@@ -630,7 +665,7 @@ var CMDS=[
   {ic:'›',label:'Go to: Tech stack',run:function(){goTo('stack');}},
   {ic:'›',label:'Go to: Blog',run:function(){goTo('blog');}},
   {ic:'›',label:'Go to: Contact',run:function(){goTo('contact');}},
-  {ic:'⇩',label:'Download CV',run:function(){window.open('https://drive.google.com/file/d/1xyUFAcntqcEYi382X8YwD-rgUcbnxQRZ/view?usp=sharing','_blank');}},
+  {ic:'⇩',label:'Download CV',run:function(){window.open('files/06132026%20Resume.pdf','_blank');}},
   {ic:'✉',label:'Email Johann',run:function(){location.href='mailto:johannxsteinhoff@gmail.com';}},
   {ic:'⧉',label:'Copy email address',run:function(){navigator.clipboard&&navigator.clipboard.writeText('johannxsteinhoff@gmail.com');}},
   {ic:'in',label:'Open LinkedIn',run:function(){window.open('https://www.linkedin.com/in/johann-steinhoff-b95b962a7','_blank');}},
@@ -687,7 +722,7 @@ var TERM={
   projects:function(){return '1. Offensive Security Simulation\n2. Predicting Texas Agricultural Production Using Climate Data\n3. Arithmetic Logic Unit\n4. Object Oriented Chess';},
   academic:function(){goTo('academic');return 'opening academic experience…';},
   contact:function(){return 'email : <span class="bl">johannxsteinhoff@gmail.com</span>\nphone : +1 (832)-292-2919\nloc   : San Marcos, TX USA';},
-  cv:function(){window.open('https://drive.google.com/file/d/1xyUFAcntqcEYi382X8YwD-rgUcbnxQRZ/view?usp=sharing','_blank');return 'opening CV in a new tab…';},
+  cv:function(){window.open('files/06132026%20Resume.pdf','_blank');return 'opening CV in a new tab…';},
   social:function(){return 'linkedin : linkedin.com/in/johann-steinhoff-b95b962a7\ngithub   : github.com/JohannSteinhoff';},
   date:function(){return new Intl.DateTimeFormat('en-US',{dateStyle:'full',timeStyle:'short',timeZone:'America/Chicago'}).format(new Date())+' (Central)';},
   sudo:function(){return '<span class="er">nice try.</span> permission denied 😄';},
@@ -720,6 +755,12 @@ document.querySelectorAll('[data-cmd]').forEach(function(el){
 });
 document.addEventListener('keydown',function(e){
   if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){e.preventDefault();palBack.classList.contains('open')?closePal():openPal();return;}
+  var slidesOpen=document.getElementById('slides').classList.contains('open');
+  if(slidesOpen){
+    if(e.key==='ArrowLeft'){e.preventDefault();showSlide(curSlide-1);return;}
+    if(e.key==='ArrowRight'){e.preventDefault();showSlide(curSlide+1);return;}
+    if(e.key==='Escape'){e.preventDefault();location.hash='#blog';return;}
+  }
   if(e.key==='`'&&!/INPUT|TEXTAREA/.test(document.activeElement.tagName)){e.preventDefault();toggleTerm();return;}
   if(e.key==='Escape'){closePal();closeTerm();}
 });
@@ -866,11 +907,52 @@ function closeProject(){
 }
 document.getElementById('projBack').addEventListener('click',function(){ location.hash='#work'; });
 
-/* hash routing: #/work/<slug> opens a project */
+/* ============================================================
+   BLOG SLIDESHOW
+   ============================================================ */
+var SLIDESHOWS={
+  'fpv-drones':{ caption:'FPV Drones: How they Work', dir:'images/drones/', prefix:'Slide', ext:'.jpg', count:25 }
+};
+var slidesEl=document.getElementById('slides'),slidesImg=document.getElementById('slidesImg'),
+    slidesIdxEl=document.getElementById('slidesIdx'),slidesTotEl=document.getElementById('slidesTot'),
+    slidesTitleEl=document.getElementById('slidesTitle'),slidesCapEl=document.getElementById('slidesCaption');
+var curShow=null,curSlide=0;
+function buildSlides(s){var a=[];for(var i=1;i<=s.count;i++)a.push(s.dir+s.prefix+i+s.ext);return a;}
+function showSlide(n){
+  if(!curShow)return;
+  var imgs=curShow._imgs;
+  curSlide=(n+imgs.length)%imgs.length;
+  slidesImg.src=imgs[curSlide];
+  slidesIdxEl.textContent=curSlide+1;
+  var nx=new Image();nx.src=imgs[(curSlide+1)%imgs.length]; // preload next
+}
+function openSlides(id){
+  var s=SLIDESHOWS[id]; if(!s)return false;
+  s._imgs=s._imgs||buildSlides(s);
+  curShow=s;
+  slidesTitleEl.textContent=id+'.slides';
+  slidesCapEl.textContent=s.caption;
+  slidesTotEl.textContent=s.count;
+  showSlide(0);
+  slidesEl.classList.add('open'); document.body.style.overflow='hidden';
+  return true;
+}
+function closeSlides(){
+  slidesEl.classList.remove('open'); document.body.style.overflow=''; curShow=null;
+  if(/^#\/blog\//.test(location.hash)) history.replaceState(null,'','#blog');
+}
+document.getElementById('slidesPrev').addEventListener('click',function(){showSlide(curSlide-1);});
+document.getElementById('slidesNext').addEventListener('click',function(){showSlide(curSlide+1);});
+document.getElementById('slidesClose').addEventListener('click',function(){location.hash='#blog';});
+
+/* hash routing: #/work/<slug> opens a project, #/blog/<id> opens a slideshow */
 function routeHash(){
   var m=location.hash.match(/^#\/work\/([a-z0-9\-]+)/);
-  if(m && PROJECTS[m[1]]){ openProject(m[1]); }
-  else { if(projEl.classList.contains('open')) closeProject(); }
+  if(m && PROJECTS[m[1]]){ if(slidesEl.classList.contains('open'))closeSlides(); openProject(m[1]); return; }
+  var b=location.hash.match(/^#\/blog\/([a-z0-9\-]+)/);
+  if(b && SLIDESHOWS[b[1]]){ if(projEl.classList.contains('open'))closeProject(); openSlides(b[1]); return; }
+  if(projEl.classList.contains('open')) closeProject();
+  if(slidesEl.classList.contains('open')) closeSlides();
 }
 window.addEventListener('hashchange',routeHash);
 routeHash();
