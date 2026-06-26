@@ -473,6 +473,81 @@
   .game-hud .wstat{ opacity:.35; transition:opacity .2s; }
   .game-hud .wstat.have{ opacity:1; color:#cfe0ff; }
   @media (max-width:640px){ .game-toast{ font-size:11px; padding:8px 12px; white-space:normal; max-width:90vw; text-align:center; } .game-hud{ top:auto; bottom:calc(var(--status-h) + 58px); font-size:12px; } }
+
+  /* ===========================================================
+     CONTACT MODAL — minimal wired card
+     =========================================================== */
+  .mb-back{ position:fixed; inset:0; z-index:96; display:none; align-items:center; justify-content:center; padding:24px;
+    background:rgba(0,0,0,.6); backdrop-filter:blur(5px); -webkit-backdrop-filter:blur(5px); opacity:0; transition:opacity .2s ease; }
+  .mb-back.open{ display:flex; opacity:1; }
+  .mb{ position:relative; width:min(460px,100%); border-radius:14px; overflow:hidden;
+    background:var(--card); border:1px solid var(--border);
+    box-shadow:0 24px 70px rgba(0,0,0,.55), 0 0 40px rgba(90,238,108,.05);
+    transform:translateY(10px) scale(.985); opacity:0; transition:transform .26s cubic-bezier(.2,.9,.25,1), opacity .26s ease; }
+  .mb-back.open .mb{ transform:none; opacity:1; }
+  /* inline (embedded in a section, not an overlay) — spans the full content width */
+  .mb-card{ position:relative; width:100%; border-radius:14px; overflow:hidden;
+    background:var(--card); border:1px solid var(--border); box-shadow:0 0 30px rgba(90,238,108,.05); }
+  /* keep the focal pieces centered & readable while the board itself goes full-width */
+  .mb-card .mb-board{ padding:34px 30px 28px; }
+  .mb-card .mb-screen{ max-width:640px; }
+  .mb-card .mb-actions{ max-width:640px; margin-left:auto; margin-right:auto; }
+  .mb-card .mb-socials{ grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); max-width:1060px; margin-left:auto; margin-right:auto; }
+  .mb-card .mb-foot{ justify-content:center; }
+
+  .mb-head{ display:flex; align-items:center; gap:9px; padding:11px 15px; border-bottom:1px solid var(--border); font-family:var(--mono); }
+  .mb-head .ico{ width:8px; height:8px; border-radius:50%; background:var(--green); }
+  .mb-head .ttl{ font-size:11.5px; color:var(--muted); }
+  .mb-head .ttl b{ color:var(--text); font-weight:500; }
+  .mb-head .x{ margin-left:auto; color:var(--muted); cursor:pointer; font-size:11.5px; transition:.15s; }
+  .mb-head .x:hover{ color:var(--green); }
+
+  .mb-board{ position:relative; padding:32px 26px 24px; }
+  .mb-traces{ position:absolute; inset:0; width:100%; height:100%; z-index:0; pointer-events:none; }
+  .mb-traces .trace{ fill:none; stroke:var(--green); stroke-width:1; opacity:.16; }
+  .mb-traces .flow{ fill:none; stroke:var(--green); stroke-width:1.4; stroke-linecap:round; stroke-dasharray:1.5 70; opacity:.85;
+    filter:drop-shadow(0 0 3px rgba(90,238,108,.55)); animation:mbFlow 3.2s linear infinite; }
+  @keyframes mbFlow{ to{ stroke-dashoffset:-71.5; } }
+  .mb-traces .node{ fill:var(--card); stroke:var(--green); stroke-width:1.1; opacity:.5; }
+
+  .mb-board > div{ position:relative; z-index:1; }
+
+  /* source node (origin of the wiring) */
+  .mb-node{ display:flex; width:fit-content; align-items:center; gap:8px; margin:0 auto 30px; padding:7px 14px; border-radius:999px;
+    border:1px solid var(--border); background:var(--panel-2); font-family:var(--mono); font-size:11.5px; color:var(--muted); }
+  .mb-node .dot{ width:7px; height:7px; border-radius:50%; background:var(--green); box-shadow:0 0 7px rgba(90,238,108,.55); }
+  .mb-node b{ color:var(--text); font-weight:500; }
+
+  /* email block */
+  .mb-screen{ margin:0 auto 30px; border-radius:9px; padding:13px 15px; background:var(--panel); border:1px solid var(--border); }
+  .mb-screen .tag{ font-family:var(--mono); font-size:11px; color:var(--comment); margin-bottom:5px; }
+  .mb-screen .addr{ font-family:var(--mono); font-size:clamp(14px,3.6vw,17px); color:var(--green); word-break:break-all;
+    user-select:all; -webkit-user-select:all; cursor:text; }
+  .mb-screen .addr::selection{ background:rgba(90,238,108,.25); }
+
+  .mb-actions{ display:flex; gap:10px; }
+  @media (max-width:440px){ .mb-actions{ flex-direction:column; } }
+  .mb-btn{ flex:1; display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:11px 14px; border-radius:9px; cursor:pointer;
+    font-family:var(--mono); font-size:13px; transition:.16s; border:1px solid var(--border); background:#1d1d1d; color:var(--text); }
+  .mb-btn .ic{ font-size:14px; opacity:.85; }
+  .mb-btn:hover{ border-color:var(--green); color:var(--green); }
+  .mb-btn.primary{ background:var(--green); color:#0c1f0e; border-color:var(--green); font-weight:600; }
+  .mb-btn.primary:hover{ filter:brightness(1.08); color:#0c1f0e; }
+  .mb-btn.copied{ border-color:var(--green); color:var(--green); background:rgba(90,238,108,.1); }
+
+  .mb-socials{ display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-top:14px; }
+  @media (max-width:440px){ .mb-socials{ grid-template-columns:repeat(2,1fr); } }
+  .mb-soc{ min-width:0; display:inline-flex; align-items:center; justify-content:center; gap:6px; padding:9px 6px; border-radius:8px;
+    border:1px solid var(--border); background:#1d1d1d; color:var(--muted); font-family:var(--mono); font-size:11.5px; white-space:nowrap; transition:.16s; }
+  .mb-soc svg{ width:14px; height:14px; fill:currentColor; flex:none; }
+  .mb-soc:hover{ color:var(--green); border-color:var(--green); transform:translateY(-1px); }
+  body.light .mb-soc{ background:#fff; }
+
+  .mb-foot{ display:flex; align-items:center; gap:8px; margin-top:16px; font-family:var(--mono); font-size:11px; color:var(--muted); }
+  .mb-foot .dot{ width:6px; height:6px; border-radius:50%; background:var(--green); box-shadow:0 0 5px rgba(90,238,108,.5); }
+
+  body.light .mb-btn{ background:#fff; }
+  body.light .mb-screen .addr{ color:#2e7d32; }
 </style>
 </head>
 <body>
@@ -529,7 +604,7 @@
                 <p class="lead">I'm excited to be a human who will <b>help the world</b> using technology.</p>
                 <div class="btn-row">
                   <a class="btn primary" href="files/06132026%20Resume.pdf" download target="_blank" rel="noopener">Download CV ↓</a>
-                  <a class="btn" href="mailto:johannxsteinhoff@gmail.com">Shoot me a message</a>
+                  <a class="btn" id="contactOpen" href="mailto:johannxsteinhoff@gmail.com">Shoot me a message</a>
                   <a class="btn" href="#contact">Work with me</a>
                 </div>
               </div>
@@ -674,7 +749,7 @@
       <div class="line reveal"><span class="sec-title">From My <span class="em">Desk</span></span></div>
       <div class="line reveal">
         <div class="blog">
-          <a class="thumb" href="#/blog/fpv-drones" aria-label="Open FPV Drones slideshow"><img src="images/drones/Slide1.jpg" alt="FPV Drones: How they Work" loading="lazy"></a>
+          <a class="thumb" href="#/blog/fpv-drones" aria-label="Open FPV Drones slideshow"><img src="images/drones/thumb.jpg" alt="FPV Drones: How they Work" loading="lazy"></a>
           <div class="body">
             <div class="date">Oct 15, 2025</div>
             <h3>FPV Drones: How they Work</h3>
@@ -688,6 +763,39 @@
     <div class="line"><span class="cmt">&lt;!-- Contact me --&gt;</span></div>
     <section id="contact">
       <div class="line reveal">
+        <div class="mb-card">
+          <div class="mb-head">
+            <span class="ico"></span>
+            <span class="ttl"><b>get in touch</b> — let's build something</span>
+          </div>
+          <div class="mb-board">
+            <svg class="mb-traces" preserveAspectRatio="none" aria-hidden="true"></svg>
+            <div class="mb-node"><span class="dot"></span> <b>johann</b><span>@steinhoff</span></div>
+            <div class="mb-screen">
+              <div class="tag">// reach me directly — select to copy</div>
+              <div class="addr">johannxsteinhoff@gmail.com</div>
+            </div>
+            <div class="mb-actions">
+              <a class="mb-btn primary mb-mail" href="mailto:johannxsteinhoff@gmail.com"><span class="ic">✉</span> Open mail app</a>
+              <button class="mb-btn mb-copy" type="button"><span class="ic">⧉</span> <span class="mb-lbl">Copy address</span></button>
+            </div>
+            <div class="mb-socials">
+              <a class="mb-soc" href="files/06132026%20Resume.pdf" download target="_blank" rel="noopener" title="Download CV"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 3v8.59l3.3-3.3 1.4 1.42L12 15.4 6.3 9.71l1.4-1.42 3.3 3.3V3h2zM5 18h14v2H5v-2z"/></svg> Download CV</a>
+              <a class="mb-soc" href="tel:+18322922919" title="Call"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.4.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.5.6 3.6.1.4 0 .8-.2 1.1l-2.3 2.1z"/></svg> Call</a>
+              <a class="mb-soc" href="https://maps.app.goo.gl/MFVuayVhQtZGsC4dA" target="_blank" rel="noopener" title="Location"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg> San Marcos</a>
+              <a class="mb-soc" href="https://www.linkedin.com/in/johann-steinhoff-b95b962a7" target="_blank" rel="noopener" title="LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.07 2.07 0 1 1 0-4.13 2.07 2.07 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.23 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.46c.98 0 1.77-.77 1.77-1.73V1.73C24 .77 23.21 0 22.23 0z"/></svg> LinkedIn</a>
+              <a class="mb-soc" href="https://github.com/JohannSteinhoff" target="_blank" rel="noopener" title="GitHub"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5C5.37.5 0 5.78 0 12.29c0 5.2 3.44 9.6 8.21 11.16.6.11.82-.25.82-.56v-2.1c-3.34.71-4.04-1.4-4.04-1.4-.55-1.36-1.34-1.72-1.34-1.72-1.09-.73.08-.72.08-.72 1.2.08 1.84 1.21 1.84 1.21 1.07 1.79 2.81 1.27 3.5.97.11-.76.42-1.27.76-1.56-2.67-.3-5.47-1.3-5.47-5.81 0-1.28.47-2.33 1.23-3.15-.12-.3-.53-1.5.12-3.14 0 0 1-.31 3.3 1.2.96-.26 1.98-.39 3-.4 1.02.01 2.04.14 3 .4 2.28-1.51 3.29-1.2 3.29-1.2.65 1.64.24 2.84.12 3.14.77.82 1.23 1.87 1.23 3.15 0 4.52-2.81 5.51-5.49 5.8.43.36.81 1.09.81 2.2v3.26c0 .31.21.68.82.56A12.01 12.01 0 0 0 24 12.29C24 5.78 18.63.5 12 .5z"/></svg> GitHub</a>
+              <a class="mb-soc" href="https://www.youtube.com/@coeqhe" target="_blank" rel="noopener" title="YouTube"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.5 6.2a3.02 3.02 0 0 0-2.12-2.14C19.5 3.55 12 3.55 12 3.55s-7.5 0-9.38.51A3.02 3.02 0 0 0 .5 6.2 31.4 31.4 0 0 0 0 12a31.4 31.4 0 0 0 .5 5.8 3.02 3.02 0 0 0 2.12 2.14c1.88.51 9.38.51 9.38.51s7.5 0 9.38-.51a3.02 3.02 0 0 0 2.12-2.14A31.4 31.4 0 0 0 24 12a31.4 31.4 0 0 0-.5-5.8zM9.6 15.57V8.43L15.82 12 9.6 15.57z"/></svg> YouTube</a>
+              <a class="mb-soc" href="https://johannsteinhoff.github.io/JohannWebsitesforhire/" target="_blank" rel="noopener" title="Websites for Hire"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.7 16.3 4.4 12l4.3-4.3-1.4-1.4L1.6 12l5.7 5.7 1.4-1.4zm6.6 0 4.3-4.3-4.3-4.3 1.4-1.4L22.4 12l-5.7 5.7-1.4-1.4z"/></svg> Hire me</a>
+            </div>
+            <div class="mb-foot">
+              <span class="dot"></span>
+              <span class="mb-status" data-idle="usually replies within a day">usually replies within a day</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="line reveal" style="margin-top:34px">
         <div class="foot">
           <div>
             <h3>Johann Steinhoff</h3>
@@ -761,6 +869,44 @@
   <span class="wstat" id="hudWings">🪽 wings</span>
 </div>
 <div class="dev-bubble" id="devBubble"></div>
+
+<!-- Contact modal: glowing motherboard -->
+<div class="mb-back" id="mbBack" role="dialog" aria-modal="true" aria-label="Contact Johann">
+  <div class="mb">
+    <div class="mb-head">
+      <span class="ico"></span>
+      <span class="ttl"><b>contact</b> — johann.info</span>
+      <span class="x" id="mbClose" title="Close (Esc)">✕ esc</span>
+    </div>
+    <div class="mb-board">
+      <svg class="mb-traces" id="mbTraces" preserveAspectRatio="none" aria-hidden="true"></svg>
+
+      <div class="mb-node"><span class="dot"></span> <b>johann</b><span>@steinhoff</span></div>
+
+      <div class="mb-screen">
+        <div class="tag">// reach me directly — select to copy</div>
+        <div class="addr">johannxsteinhoff@gmail.com</div>
+      </div>
+
+      <div class="mb-actions">
+        <a class="mb-btn primary mb-mail" href="mailto:johannxsteinhoff@gmail.com"><span class="ic">✉</span> Open mail app</a>
+        <button class="mb-btn mb-copy" type="button"><span class="ic">⧉</span> <span class="mb-lbl">Copy address</span></button>
+      </div>
+
+      <div class="mb-socials">
+        <a class="mb-soc" href="https://www.linkedin.com/in/johann-steinhoff-b95b962a7" target="_blank" rel="noopener" title="LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.07 2.07 0 1 1 0-4.13 2.07 2.07 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.23 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.46c.98 0 1.77-.77 1.77-1.73V1.73C24 .77 23.21 0 22.23 0z"/></svg> LinkedIn</a>
+        <a class="mb-soc" href="https://github.com/JohannSteinhoff" target="_blank" rel="noopener" title="GitHub"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5C5.37.5 0 5.78 0 12.29c0 5.2 3.44 9.6 8.21 11.16.6.11.82-.25.82-.56v-2.1c-3.34.71-4.04-1.4-4.04-1.4-.55-1.36-1.34-1.72-1.34-1.72-1.09-.73.08-.72.08-.72 1.2.08 1.84 1.21 1.84 1.21 1.07 1.79 2.81 1.27 3.5.97.11-.76.42-1.27.76-1.56-2.67-.3-5.47-1.3-5.47-5.81 0-1.28.47-2.33 1.23-3.15-.12-.3-.53-1.5.12-3.14 0 0 1-.31 3.3 1.2.96-.26 1.98-.39 3-.4 1.02.01 2.04.14 3 .4 2.28-1.51 3.29-1.2 3.29-1.2.65 1.64.24 2.84.12 3.14.77.82 1.23 1.87 1.23 3.15 0 4.52-2.81 5.51-5.49 5.8.43.36.81 1.09.81 2.2v3.26c0 .31.21.68.82.56A12.01 12.01 0 0 0 24 12.29C24 5.78 18.63.5 12 .5z"/></svg> GitHub</a>
+        <a class="mb-soc" href="https://www.youtube.com/@coeqhe" target="_blank" rel="noopener" title="YouTube"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.5 6.2a3.02 3.02 0 0 0-2.12-2.14C19.5 3.55 12 3.55 12 3.55s-7.5 0-9.38.51A3.02 3.02 0 0 0 .5 6.2 31.4 31.4 0 0 0 0 12a31.4 31.4 0 0 0 .5 5.8 3.02 3.02 0 0 0 2.12 2.14c1.88.51 9.38.51 9.38.51s7.5 0 9.38-.51a3.02 3.02 0 0 0 2.12-2.14A31.4 31.4 0 0 0 24 12a31.4 31.4 0 0 0-.5-5.8zM9.6 15.57V8.43L15.82 12 9.6 15.57z"/></svg> YouTube</a>
+        <a class="mb-soc" href="https://johannsteinhoff.github.io/JohannWebsitesforhire/" target="_blank" rel="noopener" title="Websites for Hire"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.7 16.3 4.4 12l4.3-4.3-1.4-1.4L1.6 12l5.7 5.7 1.4-1.4zm6.6 0 4.3-4.3-4.3-4.3 1.4-1.4L22.4 12l-5.7 5.7-1.4-1.4z"/></svg> Hire me</a>
+      </div>
+
+      <div class="mb-foot">
+        <span class="dot"></span>
+        <span class="mb-status" data-idle="usually replies within a day">usually replies within a day</span>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- Command palette -->
 <div class="pal-back" id="palBack">
@@ -938,6 +1084,111 @@ function termRun(raw){
   });
 })();
 
+/* ============================================================
+   CONTACT MODAL — motherboard popup
+   ============================================================ */
+var CONTACT_EMAIL='johannxsteinhoff@gmail.com';
+var mbBack=document.getElementById('mbBack');
+function openContact(){ mbBack.classList.add('open'); resetCopy(mbBack.querySelector('.mb-copy')); requestAnimationFrame(wireAll); setTimeout(wireAll,360); }
+function closeContact(){ mbBack.classList.remove('open'); }
+
+// rounded-corner orthogonal path through a list of [x,y] points
+function mbPath(pts,r){
+  if(pts.length<2)return '';
+  r=r||10; var d='M'+pts[0][0].toFixed(1)+' '+pts[0][1].toFixed(1);
+  for(var i=1;i<pts.length-1;i++){
+    var p0=pts[i-1],p1=pts[i],p2=pts[i+1];
+    function u(a,b){var dx=b[0]-a[0],dy=b[1]-a[1],m=Math.hypot(dx,dy)||1;return [dx/m,dy/m,m];}
+    var a=u(p1,p0),b=u(p1,p2), r1=Math.min(r,a[2]/2), r2=Math.min(r,b[2]/2);
+    d+=' L'+(p1[0]+a[0]*r1).toFixed(1)+' '+(p1[1]+a[1]*r1).toFixed(1)
+      +' Q'+p1[0].toFixed(1)+' '+p1[1].toFixed(1)+' '+(p1[0]+b[0]*r2).toFixed(1)+' '+(p1[1]+b[1]*r2).toFixed(1);
+  }
+  var L=pts[pts.length-1]; d+=' L'+L[0].toFixed(1)+' '+L[1].toFixed(1); return d;
+}
+
+/* draw copper traces that actually connect every component on ONE board */
+function wireBoard(board){
+  var svg=board.querySelector('.mb-traces'); if(!svg)return;
+  var bb=board.getBoundingClientRect();
+  if(!bb.width)return;                               // hidden (e.g. closed modal)
+  function rrect(el){ if(!el)return null; var r=el.getBoundingClientRect();
+    return {l:r.left-bb.left, t:r.top-bb.top, r:r.right-bb.left, b:r.bottom-bb.top, cx:(r.left+r.right)/2-bb.left, cy:(r.top+r.bottom)/2-bb.top}; }
+  function rel(sel){ return rrect(board.querySelector(sel)); }
+  var W=bb.width, H=bb.height,
+      cpu=rel('.mb-node'), scr=rel('.mb-screen'), mail=rel('.mb-mail'), copy=rel('.mb-copy');
+  if(!cpu||!scr||!mail||!copy)return;
+  svg.setAttribute('viewBox','0 0 '+W+' '+H);
+
+  var midNS=(cpu.b+scr.t)/2;                          // junction between node and email block
+  var busY=(scr.b+Math.min(mail.t,copy.t))/2;         // rail feeding the two buttons
+  var legs=[
+    mbPath([[cpu.cx,10],[cpu.cx,cpu.t]]),                                              // top feed into node
+    mbPath([[cpu.cx,cpu.b],[cpu.cx,midNS],[scr.cx,midNS],[scr.cx,scr.t]]),             // node -> email
+    mbPath([[scr.cx,scr.b],[scr.cx,busY],[mail.cx,busY],[mail.cx,mail.t]]),            // email -> mail btn
+    mbPath([[scr.cx,scr.b],[scr.cx,busY],[copy.cx,busY],[copy.cx,copy.t]])             // email -> copy btn
+  ];
+  var nodes=[[cpu.cx,cpu.b],[scr.cx,scr.t],[scr.cx,scr.b],[mail.cx,mail.t],[copy.cx,copy.t]];
+
+  // social links: a second rail, fed straight down from the button rail
+  var socs=[].map.call(board.querySelectorAll('.mb-soc'),rrect);
+  if(socs.length){
+    var btnBot=Math.max(mail.b,copy.b),
+        sTop=Math.min.apply(null,socs.map(function(s){return s.t;})),
+        sBusY=(btnBot+sTop)/2;
+    legs.push(mbPath([[scr.cx,busY],[scr.cx,sBusY]]));                                 // drop between the buttons
+    nodes.push([scr.cx,sBusY]);
+    socs.forEach(function(s){
+      legs.push(mbPath([[scr.cx,sBusY],[s.cx,sBusY],[s.cx,s.t]]));                     // rail -> each social
+      nodes.push([s.cx,s.t]);
+    });
+  }
+
+  var s='';
+  legs.forEach(function(d){ s+='<path class="trace" d="'+d+'"/>'; });   // faint copper underlay
+  legs.forEach(function(d){ s+='<path class="flow" d="'+d+'"/>'; });    // single subtle pulse
+  nodes.forEach(function(p){ s+='<circle class="node" cx="'+p[0].toFixed(1)+'" cy="'+p[1].toFixed(1)+'" r="3"/>'; });
+  svg.innerHTML=s;
+}
+function wireAll(){ document.querySelectorAll('.mb-board').forEach(wireBoard); }
+window.addEventListener('resize',wireAll);
+window.addEventListener('load',wireAll);
+requestAnimationFrame(wireAll);   // draw the inline card right away
+
+function mbStatusOf(el){ var b=el.closest('.mb-board'); return b?b.querySelector('.mb-status'):null; }
+function resetCopy(btn){
+  if(!btn)return;
+  btn.classList.remove('copied'); var l=btn.querySelector('.mb-lbl'); if(l)l.textContent='Copy address';
+  var s=mbStatusOf(btn); if(s)s.textContent=s.dataset.idle||'';
+}
+(function(){
+  var open=document.getElementById('contactOpen');
+  if(open)open.addEventListener('click',function(e){e.preventDefault();openContact();});
+  document.getElementById('mbClose').addEventListener('click',closeContact);
+  mbBack.addEventListener('click',function(e){ if(e.target===mbBack)closeContact(); });
+
+  document.querySelectorAll('.mb-mail').forEach(function(a){
+    a.addEventListener('click',function(){ var s=mbStatusOf(a); if(s)s.textContent='opening your mail app…'; });
+  });
+  document.querySelectorAll('.mb-copy').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var lbl=btn.querySelector('.mb-lbl'), st=mbStatusOf(btn);
+      function done(){
+        btn.classList.add('copied'); if(lbl)lbl.textContent='Copied';
+        if(st)st.textContent='email copied to clipboard';
+        clearTimeout(btn._t); btn._t=setTimeout(function(){resetCopy(btn);},2200);
+      }
+      function fallback(){
+        var t=document.createElement('textarea'); t.value=CONTACT_EMAIL; t.style.position='fixed'; t.style.opacity='0';
+        document.body.appendChild(t); t.select();
+        try{document.execCommand('copy');done();}catch(e){ if(lbl)lbl.textContent='Select & copy ↑'; }
+        document.body.removeChild(t);
+      }
+      if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(CONTACT_EMAIL).then(done,fallback); }
+      else fallback();
+    });
+  });
+})();
+
 /* ---------- global shortcuts & triggers ---------- */
 document.querySelectorAll('[data-cmd]').forEach(function(el){
   el.addEventListener('click',function(e){e.preventDefault();var c=el.dataset.cmd;if(c==='palette')openPal();if(c==='terminal')toggleTerm();});
@@ -951,7 +1202,7 @@ document.addEventListener('keydown',function(e){
     if(e.key==='Escape'){e.preventDefault();location.hash='#blog';return;}
   }
   if(e.key==='`'&&!/INPUT|TEXTAREA/.test(document.activeElement.tagName)){e.preventDefault();toggleTerm();return;}
-  if(e.key==='Escape'){closePal();closeTerm();}
+  if(e.key==='Escape'){closePal();closeTerm();closeContact();}
 });
 
 /* ============================================================
